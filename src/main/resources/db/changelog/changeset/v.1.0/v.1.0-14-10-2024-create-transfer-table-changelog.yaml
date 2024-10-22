@@ -1,0 +1,49 @@
+databaseChangeLog:
+  - changeSet:
+      id: v.1.0-1-create-transfer
+      author: andrei_savitski
+      changes:
+        - createTable:
+            tableName: transfer
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: card_id_from
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: card_id_to
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount
+                  type: numeric(38,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: transfer_start_date_time
+                  type: timestamp without time zone(6)
+              - column:
+                  name: transfer_end_date_time
+                  type: timestamp without time zone(6)
+              - column:
+                  name: client_id
+                  type: bigint
+        - addForeignKeyConstraint:
+            baseColumnNames: client_id
+            baseTableName: transfer
+            constraintName: fk-client-transfer
+            referencedColumnNames: id
+            referencedTableName: client
