@@ -4,14 +4,9 @@ import eu.senla.financialtransactions.dto.TransferCheckResponseDto;
 import eu.senla.financialtransactions.dto.TransferCheckerRequestDto;
 import eu.senla.financialtransactions.dto.TransferExecuteRequestDto;
 
-import java.io.IOException;
-import java.util.concurrent.TimeoutException;
-
 public interface TransferService {
 
-    TransferCheckResponseDto checkTransfer(TransferCheckerRequestDto transferCheckRequest)
-            throws InterruptedException, TimeoutException, IOException;
+    TransferCheckResponseDto checkTransfer(TransferCheckerRequestDto transferCheckRequest);
 
-    void executeTransfer(TransferExecuteRequestDto transferExecuteRequestDto)
-            throws IOException, InterruptedException, TimeoutException;
+    void executeTransfer(TransferExecuteRequestDto transferExecuteRequestDto);
 }

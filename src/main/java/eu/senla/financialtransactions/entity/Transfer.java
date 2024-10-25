@@ -2,6 +2,7 @@ package eu.senla.financialtransactions.entity;
 
 import eu.senla.financialtransactions.enums.TransactionStatus;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;

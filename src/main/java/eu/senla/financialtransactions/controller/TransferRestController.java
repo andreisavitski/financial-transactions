@@ -11,9 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-import java.util.concurrent.TimeoutException;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/transfer")
@@ -24,16 +21,14 @@ public class TransferRestController {
     @PostMapping("/check")
     @PreAuthorize("hasAuthority('transferMoneyBetweenYourAccounts')")
     public TransferCheckResponseDto checkTransfer(
-            @RequestBody TransferCheckerRequestDto transferCheckResponseDto)
-            throws IOException, InterruptedException, TimeoutException {
+            @RequestBody TransferCheckerRequestDto transferCheckResponseDto) {
         return transferService.checkTransfer(transferCheckResponseDto);
     }
 
     @PostMapping("/execute")
     @PreAuthorize("hasAuthority('transferMoneyBetweenYourAccounts')")
     public void executeTransfer(
-            @RequestBody TransferExecuteRequestDto transferExecuteRequestDto)
-            throws IOException, InterruptedException, TimeoutException {
+            @RequestBody TransferExecuteRequestDto transferExecuteRequestDto) {
         transferService.executeTransfer(transferExecuteRequestDto);
     }
 }

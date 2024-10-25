@@ -2,57 +2,13 @@ server:
   port: 8085
   servlet:
     context-path: /financial-transactions
-
 spring:
   application:
     name: financial-transactions
-
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: sa
-    url: jdbc:postgresql://localhost:5433/bankdb
-
-  jpa:
-    properties:
-      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
-    format-sql: true
-    hibernate:
-      ddl-auto: validate
-    open-in-view: false
-    show-sql: false
-
-  liquibase:
-    enabled: true
-
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: admin
-    password: admin
-
-rabbitmq:
-  exchange:
-    name: amq.direct
-  queue1:
-    json:
-      name: card1
-  queue2:
-    json:
-      name: card2
-  queue3:
-    json:
-      name: card3
-  queue4:
-    json:
-      name: card4
-  routing1:
-    json:
-      key: card1
-  routing3:
-    json:
-      key: card3
-
-jwt:
-  secret-key: 53A73E5F1C4E0A2D3B5F2D784E6A1B423D6F247D1F6E5C3A596D635A75327855
-  expiration: 3600000
+  config:
+      import: 'optional:configserver:'
+  cloud:
+    config:
+      fail-fast: true
+      enabled: true
+    uri: http://localhost:8888
