@@ -1,8 +1,7 @@
 package eu.senla.financialtransactions.entity;
 
-import eu.senla.financialtransactions.enums.TransactionStatus;
+import eu.senla.financialtransactions.enums.TransferStatus;
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -31,7 +30,7 @@ public class Transfer {
 
     @Column(name = "status")
     @Enumerated(STRING)
-    private TransactionStatus status;
+    private TransferStatus status;
 
     @Column(name = "transfer_start_date_time")
     private LocalDateTime transferStartDateTime;

@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static eu.senla.financialtransactions.enums.TransactionStatus.DONE;
-import static eu.senla.financialtransactions.enums.TransactionStatus.IN_PROGRESS;
+import static eu.senla.financialtransactions.enums.TransferStatus.DONE;
+import static eu.senla.financialtransactions.enums.TransferStatus.IN_PROGRESS;
 import static eu.senla.financialtransactions.exception.ApplicationError.*;
 
 @Service
@@ -52,7 +52,6 @@ public class TransferServiceImpl implements TransferService {
         return transferMapper.toTransferCheckResponseDto(transfer);
     }
 
-    //написать логику шедуллера (удаление устаревших записей ин прогресс (1 мин)))
     @Override
     public void executeTransfer(TransferExecuteRequestDto transferExecuteRequestDto) {
         Optional<Transfer> transferOptional = transferRepository.findById(transferExecuteRequestDto.getId());

@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.concurrent.Exchanger;
 
-import static eu.senla.financialtransactions.constant.AppConstants.RABBITMQ_QUEUE_2;
-import static eu.senla.financialtransactions.constant.AppConstants.RABBITMQ_QUEUE_4;
+import static eu.senla.financialtransactions.constant.AppConstants.RABBITMQ_QUEUE_RESPONSE_FOR_GET_CARD;
+import static eu.senla.financialtransactions.constant.AppConstants.RABBITMQ_QUEUE_RESPONSE_FOR_TRANSFER;
 
 @Service
 @RequiredArgsConstructor
@@ -18,12 +18,12 @@ public class RabbitMqListener {
 
     private final ExchangerManager exchangerManager;
 
-    @RabbitListener(queues = {RABBITMQ_QUEUE_2})
+    @RabbitListener(queues = {RABBITMQ_QUEUE_RESPONSE_FOR_GET_CARD})
     public void acceptRequestToReceiveAllCards(Message message) {
         processMessage(message);
     }
 
-    @RabbitListener(queues = {RABBITMQ_QUEUE_4})
+    @RabbitListener(queues = {RABBITMQ_QUEUE_RESPONSE_FOR_TRANSFER})
     public void acceptMoneyTransferRequest(Message message) {
         processMessage(message);
     }

@@ -22,22 +22,22 @@ public class RabbitMqSender {
     @Value(RABBITMQ_EXCHANGE)
     private String exchange;
 
-    @Value(RABBITMQ_ROUTING1_KEY)
-    private String routing1JsonKey;
+    @Value(RABBITMQ_ROUTING_KEY_FOR_REQUEST_GET_CARD)
+    private String routingKeyForRequestGetCard;
 
-    @Value(RABBITMQ_ROUTING3_KEY)
-    private String routing3JsonKey;
+    @Value(RABBITMQ_ROUTING_KEY_FOR_REQUEST_TRANSFER)
+    private String queueRequestForTransfer;
 
     private final RabbitTemplate rabbitTemplate;
 
     private final ExchangerManager exchangerManager;
 
     public Message sendRequestForCard(ClientCardRequest clientCardRequest) {
-        return convertAndSendMessage(clientCardRequest, routing1JsonKey);
+        return convertAndSendMessage(clientCardRequest, routingKeyForRequestGetCard);
     }
 
     public Message sendMessageForTransfer(TransferRequestMessage transferRequestMessage) {
-        return convertAndSendMessage(transferRequestMessage, routing3JsonKey);
+        return convertAndSendMessage(transferRequestMessage, queueRequestForTransfer);
     }
 
     @SneakyThrows
