@@ -1,10 +1,11 @@
 package eu.senla.financialtransactions.controller;
 
+import eu.senla.financialtransactions.dto.TransferCheckRequestDto;
 import eu.senla.financialtransactions.dto.TransferCheckResponseDto;
-import eu.senla.financialtransactions.dto.TransferCheckerRequestDto;
 import eu.senla.financialtransactions.dto.TransferExecuteRequestDto;
 import eu.senla.financialtransactions.service.TransferService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,14 +20,14 @@ public class TransferRestController {
     private final TransferService transferService;
 
     @PostMapping("/check")
-    @PreAuthorize("hasAuthority('transferMoneyBetweenYourAccounts')")
+    @PreAuthorize("hasAuthority(@permissionProvider.getPermissionForTransfer())")
     public TransferCheckResponseDto checkTransfer(
-            @RequestBody TransferCheckerRequestDto transferCheckResponseDto) {
+            @RequestBody TransferCheckRequestDto transferCheckResponseDto) {
         return transferService.checkTransfer(transferCheckResponseDto);
     }
 
     @PostMapping("/execute")
-    @PreAuthorize("hasAuthority('transferMoneyBetweenYourAccounts')")
+    @PreAuthorize("hasAuthority(@permissionProvider.getPermissionForTransfer())")
     public void executeTransfer(
             @RequestBody TransferExecuteRequestDto transferExecuteRequestDto) {
         transferService.executeTransfer(transferExecuteRequestDto);

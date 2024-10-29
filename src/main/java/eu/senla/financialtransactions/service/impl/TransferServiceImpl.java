@@ -1,8 +1,8 @@
 package eu.senla.financialtransactions.service.impl;
 
 import eu.senla.financialtransactions.dto.Card;
+import eu.senla.financialtransactions.dto.TransferCheckRequestDto;
 import eu.senla.financialtransactions.dto.TransferCheckResponseDto;
-import eu.senla.financialtransactions.dto.TransferCheckerRequestDto;
 import eu.senla.financialtransactions.dto.TransferExecuteRequestDto;
 import eu.senla.financialtransactions.entity.Client;
 import eu.senla.financialtransactions.entity.Transfer;
@@ -24,6 +24,7 @@ import java.util.UUID;
 import static eu.senla.financialtransactions.enums.TransferStatus.DONE;
 import static eu.senla.financialtransactions.enums.TransferStatus.IN_PROGRESS;
 import static eu.senla.financialtransactions.exception.ApplicationError.*;
+import static org.springframework.http.HttpStatus.OK;
 
 @Service
 @RequiredArgsConstructor
@@ -38,16 +39,13 @@ public class TransferServiceImpl implements TransferService {
     private final CardService cardService;
 
     @Override
-    public TransferCheckResponseDto checkTransfer(TransferCheckerRequestDto transferCheckerRequestDto) {
-        Transfer transfer = transferMapper.toTransfer(transferCheckerRequestDto);
+    public TransferCheckResponseDto checkTransfer(TransferCheckRequestDto transferCheckRequestDto) {
+        Transfer transfer = transferMapper.toTransfer(transferCheckRequestDto);
         Client client = clientRepository.findById(transfer.getClient().getId()).orElseThrow(
                 () -> new ApplicationException(ApplicationError.CLIENT_NOT_FOUND)
         );
         validateDataForCheck(transfer);
-        transfer.setClient(client);
-        transfer.setId(UUID.randomUUID());
-        transfer.setStatus(IN_PROGRESS);
-        transfer.setTransferStartDateTime(LocalDateTime.now());
+        setDataToNewTransfer(transfer, client);
         transferRepository.save(transfer);
         return transferMapper.toTransferCheckResponseDto(transfer);
     }
@@ -59,10 +57,8 @@ public class TransferServiceImpl implements TransferService {
                 () -> new ApplicationException(TRANSFER_NOT_FOUND)
         );
         validateDataForExecute(transfer);
-        boolean responseMessage = cardService.sendMessageToTransfer(
-                transferMapper.toTransferRequestMessage(transfer)
-        );
-        if (!responseMessage) {
+        if (cardService.sendMessageToTransfer(
+                transferMapper.toTransferRequestMessage(transfer)) != OK) {
             throw new ApplicationException(TRANSFER_NOT_COMPLETED);
         }
         transfer.setTransferEndDateTime(LocalDateTime.now());
@@ -89,9 +85,16 @@ public class TransferServiceImpl implements TransferService {
     }
 
     private void validateDataForExecute(Transfer transfer) {
-        validateDataForCheck(transfer);
         if (transfer.getStatus().equals(DONE)) {
             throw new ApplicationException(TRANSFER_ALREADY_COMPLETED);
         }
+        validateDataForCheck(transfer);
+    }
+
+    private void setDataToNewTransfer(Transfer transfer, Client client) {
+        transfer.setClient(client);
+        transfer.setId(UUID.randomUUID());
+        transfer.setStatus(IN_PROGRESS);
+        transfer.setTransferStartDateTime(LocalDateTime.now());
     }
 }

@@ -2,6 +2,7 @@ package eu.senla.financialtransactions.service;
 
 import eu.senla.financialtransactions.dto.Card;
 import eu.senla.financialtransactions.dto.TransferRequestMessage;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
@@ -9,5 +10,5 @@ public interface CardService {
 
     List<Card> getClientCard(Long id);
 
-    Boolean sendMessageToTransfer(TransferRequestMessage transferRequestMessage);
+    HttpStatus sendMessageToTransfer(TransferRequestMessage transferRequestMessage);
 }

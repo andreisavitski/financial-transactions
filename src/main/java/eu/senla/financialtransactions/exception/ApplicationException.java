@@ -10,9 +10,6 @@ public class ApplicationException extends RuntimeException {
 
     private final String code;
 
-//    public ApplicationException() {
-//    }
-
     public ApplicationException(AppError appError) {
         this(appError, appError.getCode());
     }

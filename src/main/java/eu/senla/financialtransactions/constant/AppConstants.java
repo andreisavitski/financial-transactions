@@ -23,4 +23,8 @@ public class AppConstants {
     public static final String HEADER_NAME = "Authorization";
 
     public static final String AUTHORITIES = "authorities";
+
+    public static final String PERMISSION_FOR_TRANSFER = "${permissions.permission-for-transfer}";
+
+    public static final String PERMISSION_FOR_GET_CLIENT_CARD = "${permissions.permission-for-get-client-card}";
 }

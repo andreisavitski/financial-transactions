@@ -20,7 +20,7 @@ public class CardRestController {
     private final CardService cardService;
 
     @PostMapping("/get")
-    @PreAuthorize("hasAuthority('viewMyCards')")
+    @PreAuthorize("hasAuthority(@permissionProvider.getPermissionForGetClientCard)")
     public List<Card> getCardByClientId(@RequestBody ClientCardRequest clientCardRequest) {
         return cardService.getClientCard(clientCardRequest.getId());
     }
