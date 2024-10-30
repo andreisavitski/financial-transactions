@@ -1,5 +1,6 @@
 package eu.senla.financialtransactions.manager;
 
+import org.springframework.amqp.core.Message;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -10,19 +11,19 @@ import java.util.concurrent.Exchanger;
 @Component
 public class ExchangerManager {
 
-    private final Map<String, Exchanger<String>> exchangerMap = new ConcurrentHashMap<>();
+    private final Map<String, Exchanger<Message>> exchangerMap = new ConcurrentHashMap<>();
 
     public String generateCorrelationId() {
         return UUID.randomUUID().toString();
     }
 
-    public Exchanger<String> createExchanger(String correlationId) {
-        Exchanger<String> exchanger = new Exchanger<>();
+    public Exchanger<Message> createExchanger(String correlationId) {
+        Exchanger<Message> exchanger = new Exchanger<>();
         exchangerMap.put(correlationId, exchanger);
         return exchanger;
     }
 
-    public Exchanger<String> getExchanger(String correlationId) {
+    public Exchanger<Message> getExchanger(String correlationId) {
         return exchangerMap.get(correlationId);
     }
 

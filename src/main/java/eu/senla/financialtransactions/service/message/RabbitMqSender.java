@@ -4,12 +4,13 @@ import eu.senla.financialtransactions.dto.ClientCardRequest;
 import eu.senla.financialtransactions.dto.TransferRequestMessage;
 import eu.senla.financialtransactions.manager.ExchangerManager;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.Exchanger;
-import java.util.concurrent.TimeoutException;
 
 import static eu.senla.financialtransactions.constant.AppConstants.*;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -21,41 +22,34 @@ public class RabbitMqSender {
     @Value(RABBITMQ_EXCHANGE)
     private String exchange;
 
-    @Value(RABBITMQ_ROUTING1_KEY)
-    private String routing1JsonKey;
+    @Value(RABBITMQ_ROUTING_KEY_FOR_REQUEST_GET_CARD)
+    private String routingKeyForRequestGetCard;
 
-    @Value(RABBITMQ_ROUTING3_KEY)
-    private String routing3JsonKey;
+    @Value(RABBITMQ_ROUTING_KEY_FOR_REQUEST_TRANSFER)
+    private String queueRequestForTransfer;
 
     private final RabbitTemplate rabbitTemplate;
 
     private final ExchangerManager exchangerManager;
 
-    public String sendClientId(ClientCardRequest message)
-            throws InterruptedException, TimeoutException {
-        String correlationId = exchangerManager.generateCorrelationId();
-        Exchanger<String> exchanger = exchangerManager.createExchanger(correlationId);
-        rabbitTemplate.convertAndSend(
-                exchange,
-                routing1JsonKey,
-                message,
-                messagePostProcessor -> {
-                    messagePostProcessor.getMessageProperties().setHeader("correlationId1", correlationId);
-                    return messagePostProcessor;
-                });
-        return exchanger.exchange(null, 5, SECONDS);
+    public Message sendRequestForCard(ClientCardRequest clientCardRequest) {
+        return convertAndSendMessage(clientCardRequest, routingKeyForRequestGetCard);
     }
 
-    public String sendMessageToTransfer(TransferRequestMessage message)
-            throws InterruptedException, TimeoutException {
+    public Message sendMessageForTransfer(TransferRequestMessage transferRequestMessage) {
+        return convertAndSendMessage(transferRequestMessage, queueRequestForTransfer);
+    }
+
+    @SneakyThrows
+    private Message convertAndSendMessage(Object message, String routingJsonKey) {
         String correlationId = exchangerManager.generateCorrelationId();
-        Exchanger<String> exchanger = exchangerManager.createExchanger(correlationId);
+        Exchanger<Message> exchanger = exchangerManager.createExchanger(correlationId);
         rabbitTemplate.convertAndSend(
                 exchange,
-                routing3JsonKey,
+                routingJsonKey,
                 message,
                 messagePostProcessor -> {
-                    messagePostProcessor.getMessageProperties().setHeader("correlationId2", correlationId);
+                    messagePostProcessor.getMessageProperties().setCorrelationId(correlationId);
                     return messagePostProcessor;
                 });
         return exchanger.exchange(null, 5, SECONDS);

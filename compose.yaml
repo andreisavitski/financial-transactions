@@ -9,12 +9,15 @@ services:
 #    ports:
 #      - 8085:8085
 #    environment:
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://bankdb:5432/bankdb
+#      - POSTGRES_USER=${DB_USER:-postgres}
+#      - POSTGRES_PASSWORD=${DB_PASSWORD:-sa}
 #      - eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka/
 #    depends_on:
 #      - authorization-backend
 #    networks:
 #      - web3
-#
+
 #  authorization-backend:
 #    image: authorization-backend:latest
 #    container_name: authorization-backend
@@ -29,7 +32,7 @@ services:
 #      - bankdb
 #    networks:
 #      - web3
-#
+
 #  card-backend:
 #    image: card-backend:latest
 #    container_name: card-backend
@@ -61,16 +64,16 @@ services:
     networks:
       - web3
 
-  eureka-server:
-    image: eureka-server:latest
-    container_name: eureka-server
-    ports:
-      - 8761:8761
-    networks:
-      - web3
-    environment:
-      eureka.instance.hostname: eureka-server
-      eureka.client.serviceUrl.defaultZone: http://eureka-server:8761/eureka
+#  eureka-server:
+#    image: eureka-server:latest
+#    container_name: eureka-server
+#    ports:
+#      - 8761:8761
+#    networks:
+#      - web3
+#    environment:
+#      eureka.instance.hostname: eureka-server
+#      eureka.client.serviceUrl.defaultZone: http://eureka-server:8761/eureka
 
   rabbitmq:
     image: rabbitmq:3-management-alpine

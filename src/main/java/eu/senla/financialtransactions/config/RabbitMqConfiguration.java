@@ -19,29 +19,29 @@ import static eu.senla.financialtransactions.constant.AppConstants.*;
 @Configuration
 public class RabbitMqConfiguration {
 
-    @Value(RABBITMQ_QUEUE_1)
-    private String queue1;
+    @Value(RABBITMQ_QUEUE_REQUEST_FOR_GET_CARD)
+    private String queueRequestForGetCard;
 
-    @Value(RABBITMQ_QUEUE_3)
-    private String queue3;
+    @Value(RABBITMQ_QUEUE_REQUEST_FOR_TRANSFER)
+    private String queueRequestForTransfer;
 
     @Value(RABBITMQ_EXCHANGE)
     private String exchange;
 
-    @Value(RABBITMQ_ROUTING1_KEY)
-    private String routingJsonKey1;
+    @Value(RABBITMQ_ROUTING_KEY_FOR_REQUEST_GET_CARD)
+    private String routingKeyForRequestGetCard;
 
-    @Value(RABBITMQ_ROUTING3_KEY)
-    private String routingJsonKey3;
+    @Value(RABBITMQ_ROUTING_KEY_FOR_REQUEST_TRANSFER)
+    private String routingJsonKeyForRequestTransfer;
 
     @Bean
-    public Queue queue1() {
-        return new Queue(queue1);
+    public Queue queueRequestForGetCard() {
+        return new Queue(queueRequestForGetCard);
     }
 
     @Bean
-    public Queue queue3() {
-        return new Queue(queue3);
+    public Queue queueRequestForTransfer() {
+        return new Queue(queueRequestForTransfer);
     }
 
     @Bean
@@ -50,19 +50,19 @@ public class RabbitMqConfiguration {
     }
 
     @Bean
-    public Binding binding1() {
+    public Binding bindingForRequestGetCard() {
         return BindingBuilder
-                .bind(queue1())
+                .bind(queueRequestForGetCard())
                 .to(exchange())
-                .with(routingJsonKey1);
+                .with(routingKeyForRequestGetCard);
     }
 
     @Bean
-    public Binding binding3() {
+    public Binding bindingForRequestTransfer() {
         return BindingBuilder
-                .bind(queue3())
+                .bind(queueRequestForTransfer())
                 .to(exchange())
-                .with(routingJsonKey3);
+                .with(routingJsonKeyForRequestTransfer);
     }
 
     @Bean

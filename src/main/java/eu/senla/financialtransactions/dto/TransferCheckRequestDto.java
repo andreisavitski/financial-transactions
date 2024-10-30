@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @Data
 @Builder
 @Jacksonized
-public class TransferCheckerRequestDto {
+public class TransferCheckRequestDto {
 
     private Long cardIdFrom;
 
