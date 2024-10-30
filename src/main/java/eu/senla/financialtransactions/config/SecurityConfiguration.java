@@ -42,7 +42,7 @@ public class SecurityConfiguration {
                 }))
 
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/actuator/*").permitAll()
+                        .requestMatchers("/actuator/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS));
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
