@@ -20,14 +20,16 @@ public class TransferRestController {
     private final TransferService transferService;
 
     @PostMapping("/check")
-    @PreAuthorize("hasAuthority(@permissionProvider.getPermissionForTransfer())")
+//    @PreAuthorize("hasAuthority(@permissionProvider.getPermissionForTransfer())")
+//    @PreAuthorize("hasAuthority('transferMoneyBetweenYourAccounts')")
     public TransferCheckResponseDto checkTransfer(
             @RequestBody TransferCheckRequestDto transferCheckResponseDto) {
         return transferService.checkTransfer(transferCheckResponseDto);
     }
 
     @PostMapping("/execute")
-    @PreAuthorize("hasAuthority(@permissionProvider.getPermissionForTransfer())")
+//    @PreAuthorize("hasAuthority(@permissionProvider.getPermissionForTransfer())")
+//    @PreAuthorize("hasAuthority('transferMoneyBetweenYourAccounts')")
     public void executeTransfer(
             @RequestBody TransferExecuteRequestDto transferExecuteRequestDto) {
         transferService.executeTransfer(transferExecuteRequestDto);

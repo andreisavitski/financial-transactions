@@ -25,8 +25,8 @@ public class RabbitMqConfiguration {
     @Value(RABBITMQ_QUEUE_REQUEST_FOR_TRANSFER)
     private String queueRequestForTransfer;
 
-    @Value(RABBITMQ_EXCHANGE)
-    private String exchange;
+    @Value(RABBITMQ_EXCHANGE_CARD_TRANSFER)
+    private String exchange_card_transfer;
 
     @Value(RABBITMQ_ROUTING_KEY_FOR_REQUEST_GET_CARD)
     private String routingKeyForRequestGetCard;
@@ -45,15 +45,15 @@ public class RabbitMqConfiguration {
     }
 
     @Bean
-    public DirectExchange exchange() {
-        return new DirectExchange(exchange);
+    public DirectExchange exchangeCardTransfer() {
+        return new DirectExchange(exchange_card_transfer);
     }
 
     @Bean
     public Binding bindingForRequestGetCard() {
         return BindingBuilder
                 .bind(queueRequestForGetCard())
-                .to(exchange())
+                .to(exchangeCardTransfer())
                 .with(routingKeyForRequestGetCard);
     }
 
@@ -61,7 +61,7 @@ public class RabbitMqConfiguration {
     public Binding bindingForRequestTransfer() {
         return BindingBuilder
                 .bind(queueRequestForTransfer())
-                .to(exchange())
+                .to(exchangeCardTransfer())
                 .with(routingJsonKeyForRequestTransfer);
     }
 

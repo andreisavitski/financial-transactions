@@ -57,7 +57,7 @@ public class TransferServiceImpl implements TransferService {
                 () -> new ApplicationException(TRANSFER_NOT_FOUND)
         );
         validateDataForExecute(transfer);
-        if (cardService.sendMessageToTransfer(
+        if (cardService.sendMessageForTransfer(
                 transferMapper.toTransferRequestMessage(transfer)) != OK) {
             throw new ApplicationException(TRANSFER_NOT_COMPLETED);
         }

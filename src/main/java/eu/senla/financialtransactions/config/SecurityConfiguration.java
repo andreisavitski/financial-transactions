@@ -43,7 +43,7 @@ public class SecurityConfiguration {
 
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/actuator/**").permitAll()
-                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS));
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

@@ -10,5 +10,5 @@ public interface CardService {
 
     List<Card> getClientCard(Long id);
 
-    HttpStatus sendMessageToTransfer(TransferRequestMessage transferRequestMessage);
+    HttpStatus sendMessageForTransfer(TransferRequestMessage transferRequestMessage);
 }

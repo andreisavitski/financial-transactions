@@ -1,4 +1,4 @@
-package eu.senla.financialtransactions.service.message;
+package eu.senla.financialtransactions.service.rabbitmq.listener;
 
 import eu.senla.financialtransactions.manager.ExchangerManager;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import static eu.senla.financialtransactions.constant.AppConstants.RABBITMQ_QUEU
 
 @Service
 @RequiredArgsConstructor
-public class RabbitMqListener {
+public class RabbitMqMessageCardListenerImpl {
 
     private final ExchangerManager exchangerManager;
 

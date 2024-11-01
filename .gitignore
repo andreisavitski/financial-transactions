@@ -18,9 +18,6 @@ target/
 *.iws
 *.iml
 *.ipr
-.mvn
-mvnw.cmd
-mvnw
 data
 
 ### NetBeans ###
