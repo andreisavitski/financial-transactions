@@ -13,6 +13,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 @RestControllerAdvice
 @Slf4j
 public class ApplicationExceptionHandler {
+
     @ExceptionHandler(ApplicationException.class)
     private ResponseEntity<ErrorResponseDTO> handleApplicationException(
             ApplicationException applicationException) {

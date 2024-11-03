@@ -11,11 +11,11 @@ import java.math.BigDecimal;
 @Jacksonized
 public class TransferCheckRequestDto {
 
-    private Long cardIdFrom;
+    private final Long cardIdFrom;
 
-    private Long cardIdTo;
+    private final Long cardIdTo;
 
-    private BigDecimal amount;
+    private final BigDecimal amount;
 
-    private Long clientId;
+    private final Long clientId;
 }

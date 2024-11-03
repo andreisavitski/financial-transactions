@@ -67,7 +67,7 @@ public class RabbitMqConfiguration {
 
     @Bean
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
-        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+        final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
         return rabbitTemplate;
     }
@@ -75,7 +75,7 @@ public class RabbitMqConfiguration {
     @Bean
     public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(
             ConnectionFactory connectionFactory) {
-        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+        final SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         factory.setAdviceChain(
                 RetryInterceptorBuilder
                         .stateless()
@@ -84,9 +84,6 @@ public class RabbitMqConfiguration {
                         .build()
         );
         factory.setConnectionFactory(connectionFactory);
-        factory.setErrorHandler(t -> {
-            System.err.println("Err or listener: " + t.getMessage());
-        });
         return factory;
     }
 }

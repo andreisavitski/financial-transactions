@@ -11,5 +11,5 @@ import java.util.UUID;
 @Jacksonized
 public class TransferCheckResponseDto {
 
-    private UUID id;
+    private final UUID id;
 }

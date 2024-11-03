@@ -1,6 +1,6 @@
 package eu.senla.financialtransactions.service.rabbitmq.sender;
 
-import eu.senla.financialtransactions.dto.TransferRequestMessage;
+import eu.senla.financialtransactions.dto.TransferCheckRequestDto;
 import eu.senla.financialtransactions.service.rabbitmq.RabbitMqMessageSender;
 import eu.senla.financialtransactions.service.rabbitmq.RabbitMqMessageTransferSender;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +24,8 @@ public class RabbitMqMessageTransferSenderImpl implements RabbitMqMessageTransfe
     private final RabbitMqMessageSender sender;
 
     @Override
-    public Message sendMessageForTransfer(TransferRequestMessage transferRequestMessage) {
-        return sender.convertAndSendMessage(transferRequestMessage,
+    public Message sendMessageForTransfer(TransferCheckRequestDto transferCheckRequestDto) {
+        return sender.convertAndSendMessage(transferCheckRequestDto,
                 queueRequestForTransfer, exchangeCardTransfer);
     }
 }

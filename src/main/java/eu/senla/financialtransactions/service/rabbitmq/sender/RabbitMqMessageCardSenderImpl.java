@@ -1,6 +1,6 @@
 package eu.senla.financialtransactions.service.rabbitmq.sender;
 
-import eu.senla.financialtransactions.dto.ClientCardRequest;
+import eu.senla.financialtransactions.dto.ClientCardRequestDto;
 import eu.senla.financialtransactions.service.rabbitmq.RabbitMqMessageCardSender;
 import eu.senla.financialtransactions.service.rabbitmq.RabbitMqMessageSender;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +24,8 @@ public class RabbitMqMessageCardSenderImpl implements RabbitMqMessageCardSender 
     private final RabbitMqMessageSender sender;
 
     @Override
-    public Message sendRequestForCard(ClientCardRequest clientCardRequest) {
-        return sender.convertAndSendMessage(clientCardRequest,
+    public Message sendRequestForCard(ClientCardRequestDto clientCardRequestDto) {
+        return sender.convertAndSendMessage(clientCardRequestDto,
                 routingKeyForRequestGetCard, exchangeCardTransfer);
     }
 }

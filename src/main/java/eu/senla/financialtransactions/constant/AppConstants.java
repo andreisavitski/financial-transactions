@@ -34,4 +34,8 @@ public class AppConstants {
 
     public static final String PERMISSION_FOR_GET_CLIENT_CARD =
             "${permissions.permission_for_get_client_card}";
+
+    public static final String DELETION_INTERVAL_FOR_UNCOMPLETED_TRANSFERS = "* */5 * * * *";
+
+    public static final String SCHEDULER_ENABLED = "scheduler.enabled";
 }

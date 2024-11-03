@@ -1,5 +1,6 @@
 package eu.senla.financialtransactions.manager;
 
+import jakarta.validation.constraints.NotNull;
 import org.springframework.amqp.core.Message;
 import org.springframework.stereotype.Component;
 
@@ -13,21 +14,24 @@ public class ExchangerManager {
 
     private final Map<String, Exchanger<Message>> exchangerMap = new ConcurrentHashMap<>();
 
+    @NotNull
     public String generateCorrelationId() {
         return UUID.randomUUID().toString();
     }
 
-    public Exchanger<Message> createExchanger(String correlationId) {
-        Exchanger<Message> exchanger = new Exchanger<>();
+    @NotNull
+    public Exchanger<Message> createExchanger(@NotNull String correlationId) {
+        final Exchanger<Message> exchanger = new Exchanger<>();
         exchangerMap.put(correlationId, exchanger);
         return exchanger;
     }
 
-    public Exchanger<Message> getExchanger(String correlationId) {
+    @NotNull
+    public Exchanger<Message> getExchanger(@NotNull String correlationId) {
         return exchangerMap.get(correlationId);
     }
 
-    public void removeExchanger(String correlationId) {
+    public void removeExchanger(@NotNull String correlationId) {
         exchangerMap.remove(correlationId);
     }
 }

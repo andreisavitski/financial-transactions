@@ -9,11 +9,11 @@ import java.util.List;
 @Data
 @Builder
 @Jacksonized
-public class ResponseMessage {
+public class TransferExecuteResponseDto {
 
     private final String status;
 
-    private Object data;
+    private final List<CardDto> data;
 
-    private List<Exception> exceptions;
+    private final List<Exception> exceptions;
 }

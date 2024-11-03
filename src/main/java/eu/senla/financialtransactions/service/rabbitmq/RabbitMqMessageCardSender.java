@@ -1,9 +1,9 @@
 package eu.senla.financialtransactions.service.rabbitmq;
 
-import eu.senla.financialtransactions.dto.ClientCardRequest;
+import eu.senla.financialtransactions.dto.ClientCardRequestDto;
 import org.springframework.amqp.core.Message;
 
 public interface RabbitMqMessageCardSender {
 
-    Message sendRequestForCard(ClientCardRequest clientCardRequest);
+    Message sendRequestForCard(ClientCardRequestDto clientCardRequestDto);
 }
