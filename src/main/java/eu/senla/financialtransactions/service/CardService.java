@@ -1,11 +1,23 @@
 package eu.senla.financialtransactions.service;
 
-import eu.senla.financialtransactions.dto.TransferCheckRequestDto;
-import eu.senla.financialtransactions.dto.TransferExecuteResponseDto;
+import eu.senla.financialtransactions.dto.MessageResponseDto;
+import eu.senla.financialtransactions.dto.MessageResponseDtoTest;
+import eu.senla.financialtransactions.dto.PaymentRequestDto;
+import eu.senla.financialtransactions.dto.TransferRequestDto;
+import jakarta.validation.constraints.NotNull;
 
 public interface CardService {
 
-    TransferExecuteResponseDto getClientCard(Long id);
+    @NotNull
+    MessageResponseDto getClientCard(@NotNull Long id);
 
-    TransferExecuteResponseDto sendMessageForTransfer(TransferCheckRequestDto transferCheckRequestDto);
+    MessageResponseDtoTest getClientCardTest(@NotNull Long id);
+
+    @NotNull
+    MessageResponseDto executeTransferMoney(
+            @NotNull TransferRequestDto transferRequestDto);
+
+    @NotNull
+    MessageResponseDto executeWithdrawalOfMoney(
+            @NotNull PaymentRequestDto paymentRequestDto);
 }

@@ -25,7 +25,7 @@ public class RabbitMqConfiguration {
     @Value(RABBITMQ_QUEUE_REQUEST_FOR_TRANSFER)
     private String queueRequestForTransfer;
 
-    @Value(RABBITMQ_EXCHANGE_CARD_TRANSFER)
+    @Value(RABBITMQ_EXCHANGE_CARD)
     private String exchange_card_transfer;
 
     @Value(RABBITMQ_ROUTING_KEY_FOR_REQUEST_GET_CARD)

@@ -1,9 +1,11 @@
 package eu.senla.financialtransactions.service.rabbitmq;
 
-import eu.senla.financialtransactions.dto.TransferCheckRequestDto;
+import eu.senla.financialtransactions.dto.TransferRequestDto;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.amqp.core.Message;
 
 public interface RabbitMqMessageTransferSender {
 
-    Message sendMessageForTransfer(TransferCheckRequestDto transferCheckRequestDto);
+    @NotNull
+    Message sendMessageForTransfer(@NotNull TransferRequestDto transferRequestDto);
 }

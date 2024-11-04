@@ -10,22 +10,20 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static jakarta.persistence.EnumType.STRING;
+import static jakarta.persistence.FetchType.LAZY;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "transfer")
-public class Transfer {
+@Table(name = "payment")
+public class Payment {
 
     @Id
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "card_id_from")
-    private Long cardIdFrom;
-
-    @Column(name = "card_id_to")
-    private Long cardIdTo;
+    @Column(name = "cardId")
+    private Long cardId;
 
     @Column(name = "amount")
     private BigDecimal amount;
@@ -34,13 +32,16 @@ public class Transfer {
     @Enumerated(STRING)
     private Status status;
 
-    @Column(name = "transfer_start_date_time")
-    private LocalDateTime transferStartDateTime;
+    @Column(name = "payment_start_date_time")
+    private LocalDateTime paymentStartDateTime;
 
-    @Column(name = "transfer_end_date_time")
-    private LocalDateTime transferEndDateTime;
+    @Column(name = "payment_end_date_time")
+    private LocalDateTime paymentEndDateTime;
 
-    @ManyToOne
+    @Column(name = "operator_id")
+    private Long operatorId;
+
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "client_id")
     private Client client;
 }

@@ -1,13 +1,17 @@
 package eu.senla.financialtransactions.service;
 
-import eu.senla.financialtransactions.dto.TransferExecuteResponseDto;
-import eu.senla.financialtransactions.dto.TransferCheckRequestDto;
-import eu.senla.financialtransactions.dto.TransferCheckResponseDto;
-import eu.senla.financialtransactions.dto.TransferExecuteRequestDto;
+import eu.senla.financialtransactions.dto.TransferRequestDto;
+import eu.senla.financialtransactions.dto.MessageResponseDto;
+import eu.senla.financialtransactions.dto.UuidDto;
+import jakarta.validation.constraints.NotNull;
 
 public interface TransferService {
 
-    TransferCheckResponseDto checkTransfer(TransferCheckRequestDto transferCheckRequest);
+    @NotNull
+    UuidDto checkTransfer(
+            @NotNull TransferRequestDto transferCheckRequest);
 
-    TransferExecuteResponseDto executeTransfer(TransferExecuteRequestDto transferExecuteRequestDto);
+    @NotNull
+    MessageResponseDto executeTransfer(
+            @NotNull UuidDto uuidDto);
 }

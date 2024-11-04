@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: v.1.0-4-create-operator
+      author: andrei_savitski
+      changes:
+        - createTable:
+            tableName: operator
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: activity_id
+                  type: bigint
+        - addForeignKeyConstraint:
+            baseColumnNames: activity_id
+            baseTableName: operator
+            constraintName: fk-operator-activity
+            referencedColumnNames: id
+            referencedTableName: activity

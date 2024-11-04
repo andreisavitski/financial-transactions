@@ -9,7 +9,7 @@ import java.util.UUID;
 @Data
 @Builder
 @Jacksonized
-public class TransferCheckResponseDto {
+public class UuidDto {
 
     private final UUID id;
 }

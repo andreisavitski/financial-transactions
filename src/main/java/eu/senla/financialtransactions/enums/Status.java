@@ -1,6 +1,6 @@
 package eu.senla.financialtransactions.enums;
 
-public enum TransferStatus {
+public enum Status {
 
     IN_PROGRESS,
 

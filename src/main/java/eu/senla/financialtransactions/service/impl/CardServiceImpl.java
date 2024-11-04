@@ -1,10 +1,9 @@
 package eu.senla.financialtransactions.service.impl;
 
-import eu.senla.financialtransactions.dto.ClientCardRequestDto;
-import eu.senla.financialtransactions.dto.TransferCheckRequestDto;
-import eu.senla.financialtransactions.dto.TransferExecuteResponseDto;
+import eu.senla.financialtransactions.dto.*;
 import eu.senla.financialtransactions.service.CardService;
 import eu.senla.financialtransactions.service.rabbitmq.RabbitMqMessageCardSender;
+import eu.senla.financialtransactions.service.rabbitmq.RabbitMqMessagePaymentSender;
 import eu.senla.financialtransactions.service.rabbitmq.RabbitMqMessageTransferSender;
 import eu.senla.financialtransactions.util.MessageConverter;
 import jakarta.validation.constraints.NotNull;
@@ -20,20 +19,40 @@ public class CardServiceImpl implements CardService {
 
     private final RabbitMqMessageTransferSender transferSender;
 
-    @Override
+    private final RabbitMqMessagePaymentSender paymentSender;
+
     @NotNull
-    public TransferExecuteResponseDto getClientCard(@NotNull Long id) {
+    @Override
+    public MessageResponseDto getClientCard(@NotNull Long id) {
         final ClientCardRequestDto clientCardRequestDto = ClientCardRequestDto.builder()
                 .id(id)
                 .build();
         final Message message = cardSender.sendRequestForCard(clientCardRequestDto);
-        return MessageConverter.convertToObj(message.getBody(), TransferExecuteResponseDto.class);
+        return MessageConverter.convertToObj(message.getBody(), MessageResponseDto.class);
     }
 
     @Override
+    public MessageResponseDtoTest getClientCardTest(Long id) {
+        final ClientCardRequestDto clientCardRequestDto = ClientCardRequestDto.builder()
+                .id(id)
+                .build();
+        final Message message = cardSender.sendRequestForCard(clientCardRequestDto);
+        return MessageConverter.convertToObj(message.getBody(), MessageResponseDtoTest.class);
+    }
+
     @NotNull
-    public TransferExecuteResponseDto sendMessageForTransfer(@NotNull TransferCheckRequestDto transferCheckRequestDto) {
-        final Message message = transferSender.sendMessageForTransfer(transferCheckRequestDto);
-        return MessageConverter.convertToObj(message.getBody(), TransferExecuteResponseDto.class);
+    @Override
+    public MessageResponseDto executeTransferMoney(
+            @NotNull TransferRequestDto transferRequestDto) {
+        final Message message = transferSender.sendMessageForTransfer(transferRequestDto);
+        return MessageConverter.convertToObj(message.getBody(), MessageResponseDto.class);
+    }
+
+    @NotNull
+    @Override
+    public MessageResponseDto executeWithdrawalOfMoney(
+            @NotNull PaymentRequestDto paymentRequestDto) {
+        final Message message = paymentSender.sendMessageForPayment(paymentRequestDto);
+        return MessageConverter.convertToObj(message.getBody(), MessageResponseDto.class);
     }
 }

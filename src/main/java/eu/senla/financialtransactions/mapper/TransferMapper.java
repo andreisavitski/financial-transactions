@@ -1,7 +1,7 @@
 package eu.senla.financialtransactions.mapper;
 
-import eu.senla.financialtransactions.dto.TransferCheckRequestDto;
-import eu.senla.financialtransactions.dto.TransferCheckResponseDto;
+import eu.senla.financialtransactions.dto.TransferRequestDto;
+import eu.senla.financialtransactions.dto.UuidDto;
 import eu.senla.financialtransactions.entity.Transfer;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -9,10 +9,10 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface TransferMapper {
 
-    TransferCheckResponseDto toTransferCheckResponseDto(Transfer transfer);
+    UuidDto toUuidDto(Transfer transfer);
 
     @Mapping(source = "clientId", target = "client.id")
-    Transfer toTransfer(TransferCheckRequestDto transferCheckRequestDtoDto);
+    Transfer toTransfer(TransferRequestDto transferRequestDto);
 
-    TransferCheckRequestDto toTransferCheckRequestMessageDto(Transfer transfer);
+    TransferRequestDto toTransferRequestDto(Transfer transfer);
 }

@@ -2,6 +2,7 @@ package eu.senla.financialtransactions.service.rabbitmq.sender;
 
 import eu.senla.financialtransactions.manager.ExchangerManager;
 import eu.senla.financialtransactions.service.rabbitmq.RabbitMqMessageSender;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.amqp.core.Message;
@@ -20,11 +21,14 @@ public class RabbitMqMessageSenderImpl implements RabbitMqMessageSender {
 
     private final ExchangerManager exchangerManager;
 
+    @NotNull
     @SneakyThrows
     @Override
-    public Message convertAndSendMessage(Object message, String routingKey, String exchange) {
-        String correlationId = exchangerManager.generateCorrelationId();
-        Exchanger<Message> exchanger = exchangerManager.createExchanger(correlationId);
+    public Message convertAndSendMessage(@NotNull Object message,
+                                         @NotNull String routingKey,
+                                         @NotNull String exchange) {
+        final String correlationId = exchangerManager.generateCorrelationId();
+        final Exchanger<Message> exchanger = exchangerManager.createExchanger(correlationId);
         rabbitTemplate.convertAndSend(
                 exchange,
                 routingKey,

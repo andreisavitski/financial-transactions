@@ -1,7 +1,7 @@
 package eu.senla.financialtransactions.repository;
 
 import eu.senla.financialtransactions.entity.Transfer;
-import eu.senla.financialtransactions.enums.TransferStatus;
+import eu.senla.financialtransactions.enums.Status;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -11,5 +11,5 @@ import java.util.UUID;
 public interface TransferRepository extends JpaRepository<Transfer, UUID> {
 
     void deleteByTransferStartDateTimeBeforeAndStatus(@NotNull LocalDateTime thresholdDate,
-                                                      @NotNull TransferStatus status);
+                                                      @NotNull Status status);
 }
