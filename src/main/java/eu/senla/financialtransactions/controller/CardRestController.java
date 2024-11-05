@@ -2,7 +2,6 @@ package eu.senla.financialtransactions.controller;
 
 import eu.senla.financialtransactions.dto.ClientCardRequestDto;
 import eu.senla.financialtransactions.dto.MessageResponseDto;
-import eu.senla.financialtransactions.dto.MessageResponseDtoTest;
 import eu.senla.financialtransactions.service.CardService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +21,8 @@ public class CardRestController {
     @PostMapping("/get")
     @NotNull
     @PreAuthorize("hasAuthority(@permissionProvider.getPermissionForGetClientCard)")
-    public MessageResponseDtoTest getCardByClientId(
+    public MessageResponseDto getCardByClientId(
             @RequestBody @NotNull ClientCardRequestDto clientCardRequestDto) {
-        return cardService.getClientCardTest(clientCardRequestDto.getId());
+        return cardService.getClientCard(clientCardRequestDto.getId());
     }
 }

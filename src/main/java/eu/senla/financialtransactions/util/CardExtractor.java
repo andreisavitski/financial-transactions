@@ -11,7 +11,8 @@ import static eu.senla.financialtransactions.exception.ApplicationError.CARD_NOT
 public class CardExtractor {
 
     @NotNull
-    public static CardDto getCardFromListByCardId(@NotNull List<CardDto> cards, @NotNull Long cardId) {
+    public static CardDto getCardFromListByCardId(@NotNull List<CardDto> cards,
+                                                  @NotNull Long cardId) {
         return cards.stream()
                 .filter(cardDto -> cardDto.getId().equals(cardId))
                 .findFirst()

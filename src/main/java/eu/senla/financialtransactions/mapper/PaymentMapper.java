@@ -1,5 +1,6 @@
 package eu.senla.financialtransactions.mapper;
 
+import eu.senla.financialtransactions.dto.PaymentRequestMessageDto;
 import eu.senla.financialtransactions.dto.PaymentRequestDto;
 import eu.senla.financialtransactions.dto.UuidDto;
 import eu.senla.financialtransactions.entity.Payment;
@@ -14,5 +15,6 @@ public interface PaymentMapper {
     @Mapping(source = "clientId", target = "client.id")
     Payment toPayment(PaymentRequestDto paymentRequestDto);
 
-    PaymentRequestDto toPaymentRequestDto(Payment payment);
+    @Mapping(source = "client.id", target = "clientId")
+    PaymentRequestMessageDto toPaymentMessageRequestDto(Payment payment);
 }

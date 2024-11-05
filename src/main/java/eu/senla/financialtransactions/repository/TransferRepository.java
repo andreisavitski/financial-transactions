@@ -10,6 +10,6 @@ import java.util.UUID;
 
 public interface TransferRepository extends JpaRepository<Transfer, UUID> {
 
-    void deleteByTransferStartDateTimeBeforeAndStatus(@NotNull LocalDateTime thresholdDate,
-                                                      @NotNull Status status);
+    void deleteByStartDateTimeBeforeAndStatus(@NotNull LocalDateTime thresholdDate,
+                                              @NotNull Status status);
 }

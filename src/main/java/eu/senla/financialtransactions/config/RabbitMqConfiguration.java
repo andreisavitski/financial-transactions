@@ -25,14 +25,20 @@ public class RabbitMqConfiguration {
     @Value(RABBITMQ_QUEUE_REQUEST_FOR_TRANSFER)
     private String queueRequestForTransfer;
 
+    @Value(RABBITMQ_QUEUE_REQUEST_FOR_PAYMENT)
+    private String queueRequestForPayment;
+
     @Value(RABBITMQ_EXCHANGE_CARD)
-    private String exchange_card_transfer;
+    private String exchangeCard;
 
     @Value(RABBITMQ_ROUTING_KEY_FOR_REQUEST_GET_CARD)
     private String routingKeyForRequestGetCard;
 
     @Value(RABBITMQ_ROUTING_KEY_FOR_REQUEST_TRANSFER)
-    private String routingJsonKeyForRequestTransfer;
+    private String routingKeyForRequestTransfer;
+
+    @Value(RABBITMQ_ROUTING_KEY_FOR_REQUEST_PAYMENT)
+    private String routingKeyForRequestPayment;
 
     @Bean
     public Queue queueRequestForGetCard() {
@@ -45,15 +51,20 @@ public class RabbitMqConfiguration {
     }
 
     @Bean
-    public DirectExchange exchangeCardTransfer() {
-        return new DirectExchange(exchange_card_transfer);
+    public Queue queueRequestForPayment() {
+        return new Queue(queueRequestForPayment);
+    }
+
+    @Bean
+    public DirectExchange exchangeCard() {
+        return new DirectExchange(exchangeCard);
     }
 
     @Bean
     public Binding bindingForRequestGetCard() {
         return BindingBuilder
                 .bind(queueRequestForGetCard())
-                .to(exchangeCardTransfer())
+                .to(exchangeCard())
                 .with(routingKeyForRequestGetCard);
     }
 
@@ -61,8 +72,16 @@ public class RabbitMqConfiguration {
     public Binding bindingForRequestTransfer() {
         return BindingBuilder
                 .bind(queueRequestForTransfer())
-                .to(exchangeCardTransfer())
-                .with(routingJsonKeyForRequestTransfer);
+                .to(exchangeCard())
+                .with(routingKeyForRequestTransfer);
+    }
+
+    @Bean
+    public Binding bindingForRequestPayment() {
+        return BindingBuilder
+                .bind(queueRequestForPayment())
+                .to(exchangeCard())
+                .with(routingKeyForRequestPayment);
     }
 
     @Bean

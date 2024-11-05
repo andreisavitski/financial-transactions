@@ -13,7 +13,7 @@ public class MessageResponseDto {
 
     private final String status;
 
-    private final List<CardDto> data;
+    private  Object data;
 
     private final List<Exception> exceptions;
 }

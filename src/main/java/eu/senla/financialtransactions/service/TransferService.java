@@ -1,7 +1,7 @@
 package eu.senla.financialtransactions.service;
 
-import eu.senla.financialtransactions.dto.TransferRequestDto;
 import eu.senla.financialtransactions.dto.MessageResponseDto;
+import eu.senla.financialtransactions.dto.TransferRequestDto;
 import eu.senla.financialtransactions.dto.UuidDto;
 import jakarta.validation.constraints.NotNull;
 

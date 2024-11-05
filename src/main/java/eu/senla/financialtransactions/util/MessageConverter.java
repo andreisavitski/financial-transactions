@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Setter;
 import lombok.SneakyThrows;
 
+import java.util.List;
+
 @Setter
 public class MessageConverter {
 
@@ -19,7 +21,15 @@ public class MessageConverter {
 
     @NotNull
     @SneakyThrows
-    public static byte[] convertToBytes(Object object) {
+    public static byte[] convertToBytes(@NotNull Object object) {
         return objectMapper.writeValueAsBytes(object);
+    }
+
+    @NotNull
+    public static <T> List<T> convertToListObjects(@NotNull Object o,
+                                                   @NotNull Class<T> clazz) {
+        return ((List<?>) o).stream()
+                .map(map -> objectMapper.convertValue(map, clazz))
+                .toList();
     }
 }

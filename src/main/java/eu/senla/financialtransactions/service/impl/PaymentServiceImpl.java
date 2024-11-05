@@ -10,21 +10,20 @@ import eu.senla.financialtransactions.repository.PaymentRepository;
 import eu.senla.financialtransactions.service.CardService;
 import eu.senla.financialtransactions.service.PaymentService;
 import eu.senla.financialtransactions.service.rabbitmq.RabbitMqMessagePaymentSender;
-import eu.senla.financialtransactions.util.CardExtractor;
 import eu.senla.financialtransactions.util.MessageConverter;
+import eu.senla.financialtransactions.util.OperationDataSetter;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.Message;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
+import org.springframework.transaction.annotation.Transactional;
 
 import static eu.senla.financialtransactions.constant.AppStatusConstant.OK;
-import static eu.senla.financialtransactions.enums.Status.DONE;
-import static eu.senla.financialtransactions.enums.Status.IN_PROGRESS;
-import static eu.senla.financialtransactions.exception.ApplicationError.*;
+import static eu.senla.financialtransactions.exception.ApplicationError.CLIENT_NOT_FOUND;
+import static eu.senla.financialtransactions.exception.ApplicationError.TRANSFER_NOT_FOUND;
+import static eu.senla.financialtransactions.util.OperationDataSetter.setDataAfterExecute;
+import static eu.senla.financialtransactions.util.OperationDataValidator.validateDataForCheck;
+import static eu.senla.financialtransactions.util.OperationDataValidator.validateDataForExecute;
 
 @Service
 @RequiredArgsConstructor
@@ -43,63 +42,49 @@ public class PaymentServiceImpl implements PaymentService {
     @NotNull
     @Override
     public UuidDto checkPayment(@NotNull PaymentRequestDto paymentRequestDto) {
-        final Client client = clientRepository.findById(paymentRequestDto.getClientId()).orElseThrow(
-                () -> new ApplicationException(CLIENT_NOT_FOUND)
-        );
+        final Client client = clientRepository.findById(paymentRequestDto.getClientId())
+                .orElseThrow(() -> new ApplicationException(CLIENT_NOT_FOUND));
         final Payment payment = paymentMapper.toPayment(paymentRequestDto);
-        validateDataForCheck(payment);
-        setDataToNewPayment(payment, client);
-        paymentRepository.save(payment);
-        return paymentMapper.toUuidDto(payment);
+        final MessageResponseDto messageResponseDto =
+                cardService.getClientCard(payment.getClient().getId());
+        validateDataForCheck(payment, messageResponseDto);
+        final Payment paymentAfterSet =
+                (Payment) OperationDataSetter.setDataAfterCheck(payment, client);
+        paymentRepository.save(paymentAfterSet);
+        return paymentMapper.toUuidDto(paymentAfterSet);
     }
 
+    @Transactional
     @NotNull
     @Override
     public MessageResponseDto executePayment(@NotNull UuidDto uuidDto) {
-        final Payment payment = paymentRepository.findById(uuidDto.getId()).orElseThrow(
-                () -> new ApplicationException(TRANSFER_NOT_FOUND)
-        );
-        validateDataForExecute(payment);
-        final PaymentRequestDto paymentRequestDto = paymentMapper.toPaymentRequestDto(payment);
+        final Payment payment = paymentRepository.findById(uuidDto.getId())
+                .orElseThrow(() -> new ApplicationException(TRANSFER_NOT_FOUND));
         final MessageResponseDto messageResponseDto =
+                cardService.getClientCard(payment.getClient().getId());
+        validateDataForExecute(payment, messageResponseDto);
+        final PaymentRequestMessageDto paymentRequestDto = paymentMapper.toPaymentMessageRequestDto(payment);
+        final MessageResponseDto messageResponseDtoAfterExecute =
                 cardService.executeWithdrawalOfMoney(paymentRequestDto);
-        if (messageResponseDto.getStatus().equals(OK)) {
-            final Message message = paymentSender.sendMoneyToOperator(OperatorRequestDto.builder()
-                    .amount(payment.getAmount())
-                    .operatorId(payment.getOperatorId())
-                    .clientId(payment.getClient().getId())
-                    .build());
+        if (messageResponseDtoAfterExecute.getStatus().equals(OK)) {
+            final Message message =
+                    paymentSender.sendMoneyToOperator(buildOperatorRequestDto(payment));
             final MessageResponseDto messageResponseDtoFromOperatorService
                     = MessageConverter.convertToObj(message.getBody(), MessageResponseDto.class);
             if (messageResponseDtoFromOperatorService.getStatus().equals(OK)) {
-                payment.setPaymentEndDateTime(LocalDateTime.now());
-                payment.setStatus(DONE);
-                paymentRepository.save(payment);
+                Payment paymentAfterExecute = (Payment) setDataAfterExecute(payment);
+                paymentRepository.save(paymentAfterExecute);
             }
         }
-        return messageResponseDto;
+        return messageResponseDtoAfterExecute;
     }
 
-    private void validateDataForCheck(@NotNull Payment payment) {
-        final MessageResponseDto messageResponseDto = cardService.getClientCard(payment.getClient().getId());
-        final List<CardDto> card = messageResponseDto.getData();
-        final CardDto cardDto = CardExtractor.getCardFromListByCardId(card, payment.getCardId());
-        if (cardDto.getAmount().compareTo(payment.getAmount()) < 0) {
-            throw new ApplicationException(NOT_ENOUGH_FUNDS);
-        }
-    }
-
-    private void validateDataForExecute(@NotNull Payment payment) {
-        if (payment.getStatus().equals(DONE)) {
-            throw new ApplicationException(ALREADY_COMPLETED);
-        }
-        validateDataForCheck(payment);
-    }
-
-    private void setDataToNewPayment(@NotNull Payment payment, @NotNull Client client) {
-        payment.setClient(client);
-        payment.setId(UUID.randomUUID());
-        payment.setStatus(IN_PROGRESS);
-        payment.setPaymentStartDateTime(LocalDateTime.now());
+    @NotNull
+    private OperatorRequestDto buildOperatorRequestDto(@NotNull Payment payment) {
+        return OperatorRequestDto.builder()
+                .amount(payment.getAmount())
+                .operatorId(payment.getOperatorId())
+                .clientId(payment.getClient().getId())
+                .build();
     }
 }

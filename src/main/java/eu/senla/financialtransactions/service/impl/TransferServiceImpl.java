@@ -1,6 +1,5 @@
 package eu.senla.financialtransactions.service.impl;
 
-import eu.senla.financialtransactions.dto.CardDto;
 import eu.senla.financialtransactions.dto.MessageResponseDto;
 import eu.senla.financialtransactions.dto.TransferRequestDto;
 import eu.senla.financialtransactions.dto.UuidDto;
@@ -12,19 +11,16 @@ import eu.senla.financialtransactions.repository.ClientRepository;
 import eu.senla.financialtransactions.repository.TransferRepository;
 import eu.senla.financialtransactions.service.CardService;
 import eu.senla.financialtransactions.service.TransferService;
-import eu.senla.financialtransactions.util.CardExtractor;
+import eu.senla.financialtransactions.util.OperationDataSetter;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
-
 import static eu.senla.financialtransactions.constant.AppStatusConstant.OK;
-import static eu.senla.financialtransactions.enums.Status.DONE;
-import static eu.senla.financialtransactions.enums.Status.IN_PROGRESS;
-import static eu.senla.financialtransactions.exception.ApplicationError.*;
+import static eu.senla.financialtransactions.exception.ApplicationError.CLIENT_NOT_FOUND;
+import static eu.senla.financialtransactions.exception.ApplicationError.TRANSFER_NOT_FOUND;
+import static eu.senla.financialtransactions.util.OperationDataValidator.validateDataForCheck;
+import static eu.senla.financialtransactions.util.OperationDataValidator.validateDataForExecute;
 
 @Service
 @RequiredArgsConstructor
@@ -43,56 +39,34 @@ public class TransferServiceImpl implements TransferService {
     public UuidDto checkTransfer(
             @NotNull TransferRequestDto transferRequestDto) {
         final Client client = clientRepository.findById(transferRequestDto.getClientId())
-                .orElseThrow(
-                        () -> new ApplicationException(CLIENT_NOT_FOUND)
-                );
+                .orElseThrow(() -> new ApplicationException(CLIENT_NOT_FOUND));
         final Transfer transfer = transferMapper.toTransfer(transferRequestDto);
-        validateDataForCheck(transfer);
-        setDataToNewTransfer(transfer, client);
-        transferRepository.save(transfer);
-        return transferMapper.toUuidDto(transfer);
+        final MessageResponseDto messageResponseDto =
+                cardService.getClientCard(transfer.getClient().getId());
+        validateDataForCheck(transfer, messageResponseDto);
+        final Transfer transferAfterSet =
+                (Transfer) OperationDataSetter.setDataAfterCheck(transfer, client);
+        transferRepository.save(transferAfterSet);
+        return transferMapper.toUuidDto(transferAfterSet);
     }
 
     @NotNull
     @Override
     public MessageResponseDto executeTransfer(@NotNull UuidDto uuidDto) {
-        final Transfer transfer = transferRepository.findById(uuidDto.getId()).orElseThrow(
-                () -> new ApplicationException(TRANSFER_NOT_FOUND)
-        );
-        validateDataForExecute(transfer);
+        final Transfer transfer = transferRepository.findById(uuidDto.getId()).
+                orElseThrow(() -> new ApplicationException(TRANSFER_NOT_FOUND));
+        final MessageResponseDto messageResponseDto =
+                cardService.getClientCard(transfer.getClient().getId());
+        validateDataForExecute(transfer, messageResponseDto);
         final TransferRequestDto transferRequestDto =
                 transferMapper.toTransferRequestDto(transfer);
-        final MessageResponseDto messageResponseDto =
+        final MessageResponseDto messageResponseDtoAfterExecute =
                 cardService.executeTransferMoney(transferRequestDto);
-        if (messageResponseDto.getStatus().equals(OK)) {
-            transfer.setTransferEndDateTime(LocalDateTime.now());
-            transfer.setStatus(DONE);
-            transferRepository.save(transfer);
+        if (messageResponseDtoAfterExecute.getStatus().equals(OK)) {
+            final Transfer transferAfterSet =
+                    (Transfer) OperationDataSetter.setDataAfterExecute(transfer);
+            transferRepository.save(transferAfterSet);
         }
-        return messageResponseDto;
-    }
-
-    private void validateDataForCheck(@NotNull Transfer transfer) {
-        final MessageResponseDto messageResponseDto = cardService.getClientCard(transfer.getClient().getId());
-        final List<CardDto> card = messageResponseDto.getData();
-        final CardDto cardDtoFrom = CardExtractor.getCardFromListByCardId(card, transfer.getCardIdFrom());
-        CardExtractor.getCardFromListByCardId(card, transfer.getCardIdTo());
-        if (cardDtoFrom.getAmount().compareTo(transfer.getAmount()) < 0) {
-            throw new ApplicationException(NOT_ENOUGH_FUNDS);
-        }
-    }
-
-    private void validateDataForExecute(@NotNull Transfer transfer) {
-        if (transfer.getStatus().equals(DONE)) {
-            throw new ApplicationException(ALREADY_COMPLETED);
-        }
-        validateDataForCheck(transfer);
-    }
-
-    private void setDataToNewTransfer(@NotNull Transfer transfer, @NotNull Client client) {
-        transfer.setClient(client);
-        transfer.setId(UUID.randomUUID());
-        transfer.setStatus(IN_PROGRESS);
-        transfer.setTransferStartDateTime(LocalDateTime.now());
+        return messageResponseDtoAfterExecute;
     }
 }

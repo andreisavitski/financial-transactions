@@ -11,9 +11,9 @@ import java.math.BigDecimal;
 @Jacksonized
 public class TransferRequestDto {
 
-    private final Long cardIdFrom;
+    private final Long writeOffCardId;
 
-    private final Long cardIdTo;
+    private final Long topUpCardId;
 
     private final BigDecimal amount;
 

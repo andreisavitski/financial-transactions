@@ -14,4 +14,6 @@ public class PermissionProvider {
     private String permissionForTransfer;
 
     private String permissionForGetClientCard;
+
+    private String permissionForPayment;
 }

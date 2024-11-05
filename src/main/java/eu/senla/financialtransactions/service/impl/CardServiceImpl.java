@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.Message;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CardServiceImpl implements CardService {
@@ -21,23 +23,19 @@ public class CardServiceImpl implements CardService {
 
     private final RabbitMqMessagePaymentSender paymentSender;
 
-    @NotNull
     @Override
-    public MessageResponseDto getClientCard(@NotNull Long id) {
+    public MessageResponseDto getClientCard(Long id) {
         final ClientCardRequestDto clientCardRequestDto = ClientCardRequestDto.builder()
                 .id(id)
                 .build();
         final Message message = cardSender.sendRequestForCard(clientCardRequestDto);
-        return MessageConverter.convertToObj(message.getBody(), MessageResponseDto.class);
-    }
+        final MessageResponseDto messageResponseDto =
+                MessageConverter.convertToObj(message.getBody(), MessageResponseDto.class);
+        final List<CardDto> cards =
+                MessageConverter.convertToListObjects(messageResponseDto.getData(), CardDto.class);
+        messageResponseDto.setData(cards);
+        return messageResponseDto;
 
-    @Override
-    public MessageResponseDtoTest getClientCardTest(Long id) {
-        final ClientCardRequestDto clientCardRequestDto = ClientCardRequestDto.builder()
-                .id(id)
-                .build();
-        final Message message = cardSender.sendRequestForCard(clientCardRequestDto);
-        return MessageConverter.convertToObj(message.getBody(), MessageResponseDtoTest.class);
     }
 
     @NotNull
@@ -51,8 +49,8 @@ public class CardServiceImpl implements CardService {
     @NotNull
     @Override
     public MessageResponseDto executeWithdrawalOfMoney(
-            @NotNull PaymentRequestDto paymentRequestDto) {
-        final Message message = paymentSender.sendMessageForPayment(paymentRequestDto);
+            @NotNull PaymentRequestMessageDto paymentRequestMessageDto) {
+        final Message message = paymentSender.sendMessageForPayment(paymentRequestMessageDto);
         return MessageConverter.convertToObj(message.getBody(), MessageResponseDto.class);
     }
 }

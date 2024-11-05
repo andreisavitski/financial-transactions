@@ -41,7 +41,11 @@ public class AppConstants {
 
     public static final String DELETION_INTERVAL_FOR_UNCOMPLETED_TRANSFERS = "* */5 * * * *";
 
+    public static final String DELETION_INTERVAL_FOR_UNCOMPLETED_PAYMENT = "* */5 * * * *";
+
     public static final String SCHEDULER_ENABLED = "scheduler.enabled";
 
     public static final String PERMISSIONS = "permissions";
+
+    public static final Long MINIMUM_TRANSFER_THRESHOLD = 0L;
 }

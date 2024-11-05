@@ -17,7 +17,7 @@ import static eu.senla.financialtransactions.constant.AppConstants.RABBITMQ_ROUT
 public class RabbitMqMessageTransferSenderImpl implements RabbitMqMessageTransferSender {
 
     @Value(RABBITMQ_EXCHANGE_CARD)
-    private String exchangeCardTransfer;
+    private String exchangeCard;
 
     @Value(RABBITMQ_ROUTING_KEY_FOR_REQUEST_TRANSFER)
     private String queueRequestForTransfer;
@@ -27,7 +27,7 @@ public class RabbitMqMessageTransferSenderImpl implements RabbitMqMessageTransfe
     @NotNull
     @Override
     public Message sendMessageForTransfer(@NotNull TransferRequestDto transferRequestDto) {
-        return sender.convertAndSendMessage(transferRequestDto,
-                queueRequestForTransfer, exchangeCardTransfer);
+        return sender.convertAndSendMessage(
+                transferRequestDto, queueRequestForTransfer, exchangeCard);
     }
 }
