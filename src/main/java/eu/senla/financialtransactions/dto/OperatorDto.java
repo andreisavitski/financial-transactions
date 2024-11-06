@@ -4,16 +4,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 
-import java.util.List;
-
 @Data
 @Builder
 @Jacksonized
-public class ActivityDto {
+public class OperatorDto {
 
     private final Long id;
 
     private final String name;
-
-    private final List<OperatorDto> operators;
 }

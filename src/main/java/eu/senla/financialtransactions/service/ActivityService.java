@@ -2,11 +2,11 @@ package eu.senla.financialtransactions.service;
 
 import eu.senla.financialtransactions.dto.ActivityDto;
 import jakarta.validation.constraints.NotNull;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 public interface ActivityService {
 
     @NotNull
-    List<ActivityDto> findAll();
+    Page<ActivityDto> findAll(PageRequest pageRequest);
 }

@@ -39,13 +39,25 @@ public class AppConstants {
 
     public static final String AUTHORITIES = "authorities";
 
-    public static final String DELETION_INTERVAL_FOR_UNCOMPLETED_TRANSFERS = "* */5 * * * *";
+    public static final String DELETION_INTERVAL_FOR_UNCOMPLETED_TRANSFERS = "0 */5 * * * *";
 
-    public static final String DELETION_INTERVAL_FOR_UNCOMPLETED_PAYMENT = "* */5 * * * *";
+    public static final String DELETION_INTERVAL_FOR_UNCOMPLETED_PAYMENT = "0 */5 * * * *";
 
     public static final String SCHEDULER_ENABLED = "scheduler.enabled";
 
     public static final String PERMISSIONS = "permissions";
 
     public static final Long MINIMUM_TRANSFER_THRESHOLD = 0L;
+
+    public static final String ACTIVITY_FIELD_NAME = "name";
+
+    public static final String OFFSET = "offset";
+
+    public static final String LIMIT = "limit";
+
+    public static final String SORT = "sort";
+
+    public static final String DEFAULT_OFFSET = "0";
+
+    public static final String DEFAULT_LIMIT = "10";
 }
