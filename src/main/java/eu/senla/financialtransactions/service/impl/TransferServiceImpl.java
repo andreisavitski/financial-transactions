@@ -44,10 +44,9 @@ public class TransferServiceImpl implements TransferService {
         final MessageResponseDto messageResponseDto =
                 cardService.getClientCard(transfer.getClient().getId());
         validateDataForCheck(transfer, messageResponseDto);
-        final Transfer transferAfterSet =
-                (Transfer) OperationDataSetter.setDataAfterCheck(transfer, client);
-        transferRepository.save(transferAfterSet);
-        return transferMapper.toUuidDto(transferAfterSet);
+        OperationDataSetter.setDataAfterCheck(transfer, client);
+        transferRepository.save(transfer);
+        return transferMapper.toUuidDto(transfer);
     }
 
     @NotNull
@@ -63,9 +62,8 @@ public class TransferServiceImpl implements TransferService {
         final MessageResponseDto messageResponseDtoAfterExecute =
                 cardService.executeTransferMoney(transferRequestDto);
         if (messageResponseDtoAfterExecute.getStatus().equals(OK)) {
-            final Transfer transferAfterSet =
-                    (Transfer) OperationDataSetter.setDataAfterExecute(transfer);
-            transferRepository.save(transferAfterSet);
+            OperationDataSetter.setDataAfterExecute(transfer);
+            transferRepository.save(transfer);
         }
         return messageResponseDtoAfterExecute;
     }

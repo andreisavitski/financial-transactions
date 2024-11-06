@@ -13,19 +13,17 @@ import static eu.senla.financialtransactions.enums.Status.IN_PROGRESS;
 public class OperationDataSetter {
 
     @NotNull
-    public static Operation setDataAfterCheck(@NotNull Operation operation,
+    public static void setDataAfterCheck(@NotNull Operation operation,
                                               @NotNull Client client) {
         operation.setClient(client);
         operation.setId(UUID.randomUUID());
         operation.setStatus(IN_PROGRESS);
         operation.setStartDateTime(LocalDateTime.now());
-        return operation;
     }
 
     @NotNull
-    public static Operation setDataAfterExecute(@NotNull Operation operation) {
+    public static void setDataAfterExecute(@NotNull Operation operation) {
         operation.setEndDateTime(LocalDateTime.now());
         operation.setStatus(DONE);
-        return operation;
     }
 }

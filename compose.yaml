@@ -3,51 +3,51 @@ networks:
     driver: bridge
 
 services:
-#  financial-transactions-backend:
-#    image: financial-transactions-backend:latest
-#    container_name: financial-transactions-backend
-#    ports:
-#      - 8085:8085
-#    environment:
-#      - SPRING_DATASOURCE_URL=jdbc:postgresql://bankdb:5432/bankdb
-#      - POSTGRES_USER=${DB_USER:-postgres}
-#      - POSTGRES_PASSWORD=${DB_PASSWORD:-sa}
-#      - eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka/
-#    depends_on:
-#      - authorization-backend
-#    networks:
-#      - web3
+  #  financial-transactions-backend:
+  #    image: financial-transactions-backend:latest
+  #    container_name: financial-transactions-backend
+  #    ports:
+  #      - 8085:8085
+  #    environment:
+  #      - SPRING_DATASOURCE_URL=jdbc:postgresql://bankdb:5432/bankdb
+  #      - POSTGRES_USER=${DB_USER:-postgres}
+  #      - POSTGRES_PASSWORD=${DB_PASSWORD:-sa}
+  #      - eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka/
+  #    depends_on:
+  #      - authorization-backend
+  #    networks:
+  #      - web3
 
-#  authorization-backend:
-#    image: authorization-backend:latest
-#    container_name: authorization-backend
-#    ports:
-#      - 8083:8083
-#    environment:
-#      - SPRING_DATASOURCE_URL=jdbc:postgresql://bankdb:5432/bankdb
-#      - POSTGRES_USER=${DB_USER:-postgres}
-#      - POSTGRES_PASSWORD=${DB_PASSWORD:-sa}
-#      - eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka/
-#    depends_on:
-#      - bankdb
-#    networks:
-#      - web3
+  #  authorization-backend:
+  #    image: authorization-backend:latest
+  #    container_name: authorization-backend
+  #    ports:
+  #      - 8083:8083
+  #    environment:
+  #      - SPRING_DATASOURCE_URL=jdbc:postgresql://bankdb:5432/bankdb
+  #      - POSTGRES_USER=${DB_USER:-postgres}
+  #      - POSTGRES_PASSWORD=${DB_PASSWORD:-sa}
+  #      - eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka/
+  #    depends_on:
+  #      - bankdb
+  #    networks:
+  #      - web3
 
-#  card-backend:
-#    image: card-backend:latest
-#    container_name: card-backend
-#    ports:
-#      - 8084:8084
-#    environment:
-#      - SPRING_DATASOURCE_URL=jdbc:postgresql://bankdb:5432/bankdb
-#      - POSTGRES_USER=${DB_USER:-postgres}
-#      - POSTGRES_PASSWORD=${DB_PASSWORD:-sa}
-#      - eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka/
-#    depends_on:
-#      - bankdb
-#      - authorization-backend
-#    networks:
-#      - web3
+  #  card-backend:
+  #    image: card-backend:latest
+  #    container_name: card-backend
+  #    ports:
+  #      - 8084:8084
+  #    environment:
+  #      - SPRING_DATASOURCE_URL=jdbc:postgresql://bankdb:5432/bankdb
+  #      - POSTGRES_USER=${DB_USER:-postgres}
+  #      - POSTGRES_PASSWORD=${DB_PASSWORD:-sa}
+  #      - eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka/
+  #    depends_on:
+  #      - bankdb
+  #      - authorization-backend
+  #    networks:
+  #      - web3
 
   bankdb:
     image: postgres:14.9
@@ -64,16 +64,16 @@ services:
     networks:
       - web3
 
-#  eureka-server:
-#    image: eureka-server:latest
-#    container_name: eureka-server
-#    ports:
-#      - 8761:8761
-#    networks:
-#      - web3
-#    environment:
-#      eureka.instance.hostname: eureka-server
-#      eureka.client.serviceUrl.defaultZone: http://eureka-server:8761/eureka
+  #  eureka-server:
+  #    image: eureka-server:latest
+  #    container_name: eureka-server
+  #    ports:
+  #      - 8761:8761
+  #    networks:
+  #      - web3
+  #    environment:
+  #      eureka.instance.hostname: eureka-server
+  #      eureka.client.serviceUrl.defaultZone: http://eureka-server:8761/eureka
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
@@ -89,3 +89,25 @@ services:
       - ./data/rabbitmq/log/:/var/log/rabbitmq
     networks:
       - web3
+
+
+#  elasticsearch:
+#    image: elasticsearch:7.8.1
+#    ports:
+#      - 9200:9200
+#    environment:
+#      discovery.type: 'single-node'
+#      xpack.security.enabled: 'true'
+#      ELASTIC_PASSWORD: '<your_password>'
+#      ES_JAVA_OPTS: '-Xmx2g -Xms2g'
+#    networks:
+#      - web3
+#
+#  kibana:
+#    image: kibana:7.8.1
+#    volumes:
+#      - ./kibana.yml:/usr/share/kibana/config/kibana.yml
+#    ports:
+#      - 5601:5601
+#    networks:
+#      - web3

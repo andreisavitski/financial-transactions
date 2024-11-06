@@ -126,6 +126,11 @@
 				<artifactId>hibernate-jpamodelgen</artifactId>
 				<version>${hibernate-jpamodelgen.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>net.logstash.logback</groupId>
+				<artifactId>logstash-logback-encoder</artifactId>
+				<version>6.4</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
