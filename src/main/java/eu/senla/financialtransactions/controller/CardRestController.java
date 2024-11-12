@@ -1,16 +1,15 @@
 package eu.senla.financialtransactions.controller;
 
-import eu.senla.financialtransactions.dto.Card;
-import eu.senla.financialtransactions.dto.ClientCardRequest;
+import eu.senla.financialtransactions.dto.ClientCardRequestDto;
+import eu.senla.financialtransactions.dto.MessageResponseDto;
 import eu.senla.financialtransactions.service.CardService;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,8 +19,10 @@ public class CardRestController {
     private final CardService cardService;
 
     @PostMapping("/get")
+    @NotNull
     @PreAuthorize("hasAuthority(@permissionProvider.getPermissionForGetClientCard)")
-    public List<Card> getCardByClientId(@RequestBody ClientCardRequest clientCardRequest) {
-        return cardService.getClientCard(clientCardRequest.getId());
+    public MessageResponseDto getCardByClientId(
+            @RequestBody @NotNull ClientCardRequestDto clientCardRequestDto) {
+        return cardService.getClientCard(clientCardRequestDto.getId());
     }
 }

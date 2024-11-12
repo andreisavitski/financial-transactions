@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: v.1.0-5-insert-activity
+      author: andrei_savitski
+      changes:
+        - insert:
+            tableName: activity
+            columns:
+              - column:
+                  name: id
+                  value: 2545
+              - column:
+                  name: name
+                  value: mobile_communication
+        - insert:
+            tableName: activity
+            columns:
+              - column:
+                  name: id
+                  value: 4533
+              - column:
+                  name: name
+                  value: internet
+        - insert:
+            tableName: activity
+            columns:
+              - column:
+                  name: id
+                  value: 2343
+              - column:
+                  name: name
+                  value: public_utilities

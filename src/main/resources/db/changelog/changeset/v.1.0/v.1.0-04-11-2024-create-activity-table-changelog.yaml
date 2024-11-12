@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: v.1.0-3-create-activity
+      author: andrei_savitski
+      changes:
+        - createTable:
+            tableName: activity
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar
+                  constraints:
+                    unique: true
+                    nullable: false

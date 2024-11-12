@@ -1,14 +1,19 @@
 package eu.senla.financialtransactions.service;
 
-import eu.senla.financialtransactions.dto.Card;
-import eu.senla.financialtransactions.dto.TransferRequestMessage;
-import org.springframework.http.HttpStatus;
-
-import java.util.List;
+import eu.senla.financialtransactions.dto.MessageResponseDto;
+import eu.senla.financialtransactions.dto.PaymentRequestMessageDto;
+import eu.senla.financialtransactions.dto.TransferRequestDto;
+import jakarta.validation.constraints.NotNull;
 
 public interface CardService {
 
-    List<Card> getClientCard(Long id);
+    MessageResponseDto getClientCard(@NotNull Long id);
 
-    HttpStatus sendMessageToTransfer(TransferRequestMessage transferRequestMessage);
+    @NotNull
+    MessageResponseDto executeTransferMoney(
+            @NotNull TransferRequestDto transferRequestDto);
+
+    @NotNull
+    MessageResponseDto executeWithdrawalOfMoney(
+            @NotNull PaymentRequestMessageDto paymentRequestMessageDto);
 }

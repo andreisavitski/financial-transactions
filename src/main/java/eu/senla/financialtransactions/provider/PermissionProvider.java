@@ -1,22 +1,19 @@
 package eu.senla.financialtransactions.provider;
 
-import lombok.Getter;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
-import static eu.senla.financialtransactions.constant.AppConstants.PERMISSION_FOR_TRANSFER;
-import static eu.senla.financialtransactions.constant.AppConstants.PERMISSION_FOR_GET_CLIENT_CARD;
-import static org.springframework.beans.factory.config.ConfigurableBeanFactory.SCOPE_PROTOTYPE;
+import static eu.senla.financialtransactions.constant.AppConstants.PERMISSIONS;
 
-@Component
-@Scope(value = SCOPE_PROTOTYPE)
-@Getter
+@Data
+@Configuration
+@ConfigurationProperties(prefix = PERMISSIONS)
 public class PermissionProvider {
 
-    @Value(value = PERMISSION_FOR_TRANSFER)
     private String permissionForTransfer;
 
-    @Value(value = PERMISSION_FOR_GET_CLIENT_CARD)
     private String permissionForGetClientCard;
+
+    private String permissionForPayment;
 }

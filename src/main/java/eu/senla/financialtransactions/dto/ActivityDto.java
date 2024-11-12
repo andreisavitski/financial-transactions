@@ -4,12 +4,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 
-import java.util.UUID;
+import java.util.List;
 
 @Data
 @Builder
 @Jacksonized
-public class TransferCheckResponseDto {
+public class ActivityDto {
 
-    private UUID id;
+    private final Long id;
+
+    private final String name;
+
+    private final List<OperatorDto> operators;
 }

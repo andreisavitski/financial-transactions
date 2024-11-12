@@ -1,3 +1,13 @@
 databaseChangeLog:
   - include:
       file: db/changelog/changeset/v.1.0/v.1.0-14-10-2024-create-transfer-table-changelog.yaml
+  - include:
+      file: db/changelog/changeset/v.1.0/v.1.0-04-11-2024-create-activity-table-changelog.yaml
+  - include:
+      file: db/changelog/changeset/v.1.0/v.1.0-04-11-2024-create-operator-table-changelog.yaml
+  - include:
+      file: db/changelog/changeset/v.1.0/v.1.0-04-11-2024-create-payment-table-changelog.yaml
+  - include:
+      file: db/changelog/changeset/v.1.0/v.1.0-04-11-2024-insert-activity-changelog.yaml
+  - include:
+      file: db/changelog/changeset/v.1.0/v.1.0-04-11-2024-insert-operator-changelog.yaml

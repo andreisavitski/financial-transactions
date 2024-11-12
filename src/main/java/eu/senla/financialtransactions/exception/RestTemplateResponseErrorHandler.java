@@ -1,5 +1,6 @@
 package eu.senla.financialtransactions.exception;
 
+import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
@@ -10,15 +11,17 @@ import java.io.IOException;
 
 @Component
 public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
+
+    @NotNull
     @Override
-    public boolean hasError(ClientHttpResponse httpResponse) throws IOException {
+    public boolean hasError(@NotNull ClientHttpResponse httpResponse) throws IOException {
         return httpResponse.getStatusCode()
-                       .is5xxServerError() || httpResponse.getStatusCode()
-                       .is4xxClientError();
+                .is5xxServerError() || httpResponse.getStatusCode()
+                .is4xxClientError();
     }
 
     @Override
-    public void handleError(ClientHttpResponse httpResponse) throws IOException {
+    public void handleError(@NotNull ClientHttpResponse httpResponse) throws IOException {
         if (httpResponse.getStatusCode()
                 .is5xxServerError()) {
             throw new HttpClientErrorException(httpResponse.getStatusCode());

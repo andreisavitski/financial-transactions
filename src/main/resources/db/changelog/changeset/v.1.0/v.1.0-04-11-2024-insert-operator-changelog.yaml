@@ -1,0 +1,77 @@
+databaseChangeLog:
+  - changeSet:
+      id: v.1.0-6-insert-operator
+      author: andrei_savitski
+      changes:
+        - insert:
+            tableName: operator
+            columns:
+              - column:
+                  name: id
+                  value: 6776
+              - column:
+                  name: name
+                  value: MTS
+              - column:
+                  name: activity_id
+                  value: 2545
+        - insert:
+            tableName: operator
+            columns:
+              - column:
+                  name: id
+                  value: 5466
+              - column:
+                  name: name
+                  value: A1
+              - column:
+                  name: activity_id
+                  value: 2545
+        - insert:
+            tableName: operator
+            columns:
+              - column:
+                  name: id
+                  value: 664524
+              - column:
+                  name: name
+                  value: ByFly
+              - column:
+                  name: activity_id
+                  value: 4533
+        - insert:
+            tableName: operator
+            columns:
+              - column:
+                  name: id
+                  value: 6624
+              - column:
+                  name: name
+                  value: Garant
+              - column:
+                  name: activity_id
+                  value: 4533
+        - insert:
+            tableName: operator
+            columns:
+              - column:
+                  name: id
+                  value: 46756
+              - column:
+                  name: name
+                  value: Gas
+              - column:
+                  name: activity_id
+                  value: 2343
+        - insert:
+            tableName: operator
+            columns:
+              - column:
+                  name: id
+                  value: 7677
+              - column:
+                  name: name
+                  value: water
+              - column:
+                  name: activity_id
+                  value: 2343

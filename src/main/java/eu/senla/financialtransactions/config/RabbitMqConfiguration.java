@@ -25,14 +25,20 @@ public class RabbitMqConfiguration {
     @Value(RABBITMQ_QUEUE_REQUEST_FOR_TRANSFER)
     private String queueRequestForTransfer;
 
-    @Value(RABBITMQ_EXCHANGE)
-    private String exchange;
+    @Value(RABBITMQ_QUEUE_REQUEST_FOR_PAYMENT)
+    private String queueRequestForPayment;
+
+    @Value(RABBITMQ_EXCHANGE_CARD)
+    private String exchangeCard;
 
     @Value(RABBITMQ_ROUTING_KEY_FOR_REQUEST_GET_CARD)
     private String routingKeyForRequestGetCard;
 
     @Value(RABBITMQ_ROUTING_KEY_FOR_REQUEST_TRANSFER)
-    private String routingJsonKeyForRequestTransfer;
+    private String routingKeyForRequestTransfer;
+
+    @Value(RABBITMQ_ROUTING_KEY_FOR_REQUEST_PAYMENT)
+    private String routingKeyForRequestPayment;
 
     @Bean
     public Queue queueRequestForGetCard() {
@@ -45,15 +51,20 @@ public class RabbitMqConfiguration {
     }
 
     @Bean
-    public DirectExchange exchange() {
-        return new DirectExchange(exchange);
+    public Queue queueRequestForPayment() {
+        return new Queue(queueRequestForPayment);
+    }
+
+    @Bean
+    public DirectExchange exchangeCard() {
+        return new DirectExchange(exchangeCard);
     }
 
     @Bean
     public Binding bindingForRequestGetCard() {
         return BindingBuilder
                 .bind(queueRequestForGetCard())
-                .to(exchange())
+                .to(exchangeCard())
                 .with(routingKeyForRequestGetCard);
     }
 
@@ -61,13 +72,21 @@ public class RabbitMqConfiguration {
     public Binding bindingForRequestTransfer() {
         return BindingBuilder
                 .bind(queueRequestForTransfer())
-                .to(exchange())
-                .with(routingJsonKeyForRequestTransfer);
+                .to(exchangeCard())
+                .with(routingKeyForRequestTransfer);
+    }
+
+    @Bean
+    public Binding bindingForRequestPayment() {
+        return BindingBuilder
+                .bind(queueRequestForPayment())
+                .to(exchangeCard())
+                .with(routingKeyForRequestPayment);
     }
 
     @Bean
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
-        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+        final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
         return rabbitTemplate;
     }
@@ -75,7 +94,7 @@ public class RabbitMqConfiguration {
     @Bean
     public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(
             ConnectionFactory connectionFactory) {
-        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+        final SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         factory.setAdviceChain(
                 RetryInterceptorBuilder
                         .stateless()
@@ -84,9 +103,6 @@ public class RabbitMqConfiguration {
                         .build()
         );
         factory.setConnectionFactory(connectionFactory);
-        factory.setErrorHandler(t -> {
-            System.err.println("Err or listener: " + t.getMessage());
-        });
         return factory;
     }
 }

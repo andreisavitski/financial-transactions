@@ -8,19 +8,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
-import static eu.senla.financialtransactions.enums.TransferStatus.IN_PROGRESS;
+import static eu.senla.financialtransactions.constant.AppConstants.DELETION_INTERVAL_FOR_UNCOMPLETED_TRANSFERS;
+import static eu.senla.financialtransactions.enums.Status.IN_PROGRESS;
 
 @Component
 @RequiredArgsConstructor
-public class ScheduledTask {
+public class UnsuccessfulTransferRemover {
 
     private final TransferRepository transferRepository;
 
     @Transactional
-    @Scheduled(cron = "* */5 * * * *")
+    @Scheduled(cron = DELETION_INTERVAL_FOR_UNCOMPLETED_TRANSFERS)
     public void deleteOldUncompletedTransfer() {
-        LocalDateTime thresholdDate = LocalDateTime.now().minusMinutes(1);
-        transferRepository.deleteByTransferStartDateTimeBeforeAndStatus(
+        final LocalDateTime thresholdDate = LocalDateTime.now().minusMinutes(1);
+        transferRepository.deleteByStartDateTimeBeforeAndStatus(
                 thresholdDate,
                 IN_PROGRESS);
     }

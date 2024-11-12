@@ -7,6 +7,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -31,27 +32,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private String jwtKey;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain)
+    protected void doFilterInternal(@NotNull HttpServletRequest request,
+                                    @NotNull HttpServletResponse response,
+                                    @NotNull FilterChain filterChain)
             throws ServletException, IOException {
-        String header = request.getHeader(HEADER_NAME);
-        String token;
+        final String header = request.getHeader(HEADER_NAME);
+        final String token;
         String username = null;
         List<GrantedAuthority> authorities = new ArrayList<>();
         if (header != null && header.startsWith(BEARER_PREFIX)) {
             token = header.substring(7);
-            SecretKey secret = Keys.hmacShaKeyFor(BASE64.decode(jwtKey));
-            Claims claims = Jwts.parser()
+            final SecretKey secret = Keys.hmacShaKeyFor(BASE64.decode(jwtKey));
+            final Claims claims = Jwts.parser()
                     .verifyWith(secret)
                     .build()
                     .parseSignedClaims(token).getPayload();
             username = claims.getSubject();
-            String authorityString = claims.get(AUTHORITIES, String.class);
+            final String authorityString = claims.get(AUTHORITIES, String.class);
             authorities = AuthorityUtils.commaSeparatedStringToAuthorityList(authorityString);
         }
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UsernamePasswordAuthenticationToken authentication =
+            final UsernamePasswordAuthenticationToken authentication =
                     new UsernamePasswordAuthenticationToken(username, null, authorities);
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);

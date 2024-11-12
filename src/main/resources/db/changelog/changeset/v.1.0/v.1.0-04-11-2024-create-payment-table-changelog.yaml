@@ -1,0 +1,49 @@
+databaseChangeLog:
+  - changeSet:
+      id: v.1.0-2-create-payment
+      author: andrei_savitski
+      changes:
+        - createTable:
+            tableName: payment
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: write_off_card_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount
+                  type: numeric(38,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: start_date_time
+                  type: timestamp without time zone(6)
+              - column:
+                  name: end_date_time
+                  type: timestamp without time zone(6)
+              - column:
+                  name: operator_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: client_id
+                  type: bigint
+        - addForeignKeyConstraint:
+            baseColumnNames: client_id
+            baseTableName: payment
+            constraintName: fk-client-payment
+            referencedColumnNames: id
+            referencedTableName: client

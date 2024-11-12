@@ -10,8 +10,19 @@
         </layout>
     </appender>
 
+<!--    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--        <file>./log/application.log</file>-->
+<!--        <append>true</append>-->
+<!--        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>-->
+<!--        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">-->
+<!--            <fileNamePattern>./log/application.%d.%i.log.gz</fileNamePattern>-->
+<!--            <maxFileSize>10MB</maxFileSize>-->
+<!--        </rollingPolicy>-->
+<!--    </appender>-->
+
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
+<!--        <appender-ref ref="FILE" />-->
     </root>
 
 </configuration>

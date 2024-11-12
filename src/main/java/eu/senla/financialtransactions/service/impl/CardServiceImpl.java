@@ -1,14 +1,14 @@
 package eu.senla.financialtransactions.service.impl;
 
-import eu.senla.financialtransactions.converter.MessageUtil;
-import eu.senla.financialtransactions.dto.Card;
-import eu.senla.financialtransactions.dto.ClientCardRequest;
-import eu.senla.financialtransactions.dto.TransferRequestMessage;
+import eu.senla.financialtransactions.dto.*;
 import eu.senla.financialtransactions.service.CardService;
-import eu.senla.financialtransactions.service.message.RabbitMqSender;
+import eu.senla.financialtransactions.service.rabbitmq.RabbitMqMessageCardSender;
+import eu.senla.financialtransactions.service.rabbitmq.RabbitMqMessagePaymentSender;
+import eu.senla.financialtransactions.service.rabbitmq.RabbitMqMessageTransferSender;
+import eu.senla.financialtransactions.util.MessageConverter;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.Message;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,22 +17,40 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CardServiceImpl implements CardService {
 
-    private final RabbitMqSender rabbitMqSender;
+    private final RabbitMqMessageCardSender cardSender;
 
-    private final MessageUtil messageUtil;
+    private final RabbitMqMessageTransferSender transferSender;
+
+    private final RabbitMqMessagePaymentSender paymentSender;
 
     @Override
-    public List<Card> getClientCard(Long id) {
-        ClientCardRequest clientCardRequest = ClientCardRequest.builder()
+    public MessageResponseDto getClientCard(Long id) {
+        final ClientCardRequestDto clientCardRequestDto = ClientCardRequestDto.builder()
                 .id(id)
                 .build();
-        return messageUtil.convertToList(rabbitMqSender
-                .sendRequestForCard(clientCardRequest).getBody(), Card.class);
+        final Message message = cardSender.sendRequestForCard(clientCardRequestDto);
+        final MessageResponseDto messageResponseDto =
+                MessageConverter.convertToObj(message.getBody(), MessageResponseDto.class);
+        final List<CardDto> cards =
+                MessageConverter.convertToListObjects(messageResponseDto.getData(), CardDto.class);
+        messageResponseDto.setData(cards);
+        return messageResponseDto;
+
     }
 
+    @NotNull
     @Override
-    public HttpStatus sendMessageToTransfer(TransferRequestMessage transferRequestMessage) {
-        Message message = rabbitMqSender.sendMessageForTransfer(transferRequestMessage);
-        return messageUtil.convertToObj(message.getBody(), HttpStatus.class);
+    public MessageResponseDto executeTransferMoney(
+            @NotNull TransferRequestDto transferRequestDto) {
+        final Message message = transferSender.sendMessageForTransfer(transferRequestDto);
+        return MessageConverter.convertToObj(message.getBody(), MessageResponseDto.class);
+    }
+
+    @NotNull
+    @Override
+    public MessageResponseDto executeWithdrawalOfMoney(
+            @NotNull PaymentRequestMessageDto paymentRequestMessageDto) {
+        final Message message = paymentSender.sendMessageForPayment(paymentRequestMessageDto);
+        return MessageConverter.convertToObj(message.getBody(), MessageResponseDto.class);
     }
 }

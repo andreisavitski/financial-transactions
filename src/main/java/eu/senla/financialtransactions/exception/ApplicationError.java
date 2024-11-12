@@ -1,5 +1,6 @@
 package eu.senla.financialtransactions.exception;
 
+import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 
 import java.util.function.Supplier;
@@ -19,7 +20,7 @@ public enum ApplicationError implements AppError, Supplier<ApplicationException>
 
     TRANSFER_NOT_COMPLETED(NOT_FOUND, "The transfer not completed. Something went wrong:("),
 
-    TRANSFER_ALREADY_COMPLETED(BAD_REQUEST, "The transfer is already completed");
+    ALREADY_COMPLETED(BAD_REQUEST, "Already completed");
 
     private final HttpStatus status;
 
@@ -30,16 +31,19 @@ public enum ApplicationError implements AppError, Supplier<ApplicationException>
         this.code = code;
     }
 
+    @NotNull
     @Override
     public ApplicationException get() {
         return new ApplicationException(this);
     }
 
+    @NotNull
     @Override
     public final HttpStatus getStatus() {
         return status;
     }
 
+    @NotNull
     @Override
     public final String getCode() {
         return code;
