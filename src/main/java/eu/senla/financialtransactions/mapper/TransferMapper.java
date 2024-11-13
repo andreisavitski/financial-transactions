@@ -6,7 +6,9 @@ import eu.senla.financialtransactions.entity.Transfer;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+import static eu.senla.financialtransactions.constant.AppConstants.SPRING;
+
+@Mapper(componentModel = SPRING)
 public interface TransferMapper {
 
     UuidDto toUuidDto(Transfer transfer);

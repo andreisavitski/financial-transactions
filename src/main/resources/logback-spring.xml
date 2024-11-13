@@ -20,9 +20,46 @@
 <!--        </rollingPolicy>-->
 <!--    </appender>-->
 
+<!--    <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">-->
+<!--        <destination>logstash:4560</destination>-->
+<!--        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">-->
+<!--            <providers>-->
+<!--                <timestamp>-->
+<!--                    <timeZone>UTC</timeZone>-->
+<!--                </timestamp>-->
+<!--                <pattern>-->
+<!--                    <pattern>-->
+<!--                        {-->
+<!--                        "logLevel": "%level",-->
+<!--                        "serviceName": "${springAppName:-}",-->
+<!--                        "pid": "${PID:-}",-->
+<!--                        "thread": "%thread",-->
+<!--                        "class": "%logger{40}",-->
+<!--                        "rest": "%message"-->
+<!--                        }-->
+<!--                    </pattern>-->
+<!--                </pattern>-->
+<!--            </providers>-->
+<!--        </encoder>-->
+<!--        <encoder class="net.logstash.logback.encoder.LogstashEncoder">-->
+<!--            <includeCallerData>true</includeCallerData>-->
+<!--        </encoder>-->
+<!--    </appender>-->
+
+<!--    <appender name="STASH" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--        <file>logback/redditApp.log</file>-->
+<!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+<!--            <fileNamePattern>logback/redditApp.%d{yyyy-MM-dd}.log</fileNamePattern>-->
+<!--            <maxHistory>7</maxHistory>-->
+<!--        </rollingPolicy>-->
+<!--        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>-->
+<!--    </appender>-->
+
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
 <!--        <appender-ref ref="FILE" />-->
+<!--        <appender-ref ref="LOGSTASH" />-->
+<!--        <appender-ref ref="STASH"/>-->
     </root>
 
 </configuration>

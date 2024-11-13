@@ -62,4 +62,8 @@ public class AppConstants {
     public static final String DEFAULT_LIMIT = "10";
 
     public static final String REQUEST_ID = "requestId";
+
+    public static final String CLIENT_ID = "clientId";
+
+    public static final String SPRING = "spring";
 }

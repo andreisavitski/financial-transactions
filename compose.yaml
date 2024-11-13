@@ -64,16 +64,18 @@ services:
     networks:
       - web3
 
-  #  eureka-server:
-  #    image: eureka-server:latest
-  #    container_name: eureka-server
-  #    ports:
-  #      - 8761:8761
-  #    networks:
-  #      - web3
-  #    environment:
-  #      eureka.instance.hostname: eureka-server
-  #      eureka.client.serviceUrl.defaultZone: http://eureka-server:8761/eureka
+  actiondb:
+    image: mongo:latest
+    container_name: actiondb
+    restart: always
+    environment:
+      - MONGO_INITDB_DATABASE=actiondb
+    ports:
+      - 27018:27017
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - web3
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
@@ -90,24 +92,49 @@ services:
     networks:
       - web3
 
-
 #  elasticsearch:
-#    image: elasticsearch:7.8.1
+#    image: elasticsearch:7.16.2
+#    container_name: elasticsearch
 #    ports:
 #      - 9200:9200
+#      - 9300:9300
 #    environment:
-#      discovery.type: 'single-node'
-#      xpack.security.enabled: 'true'
-#      ELASTIC_PASSWORD: '<your_password>'
-#      ES_JAVA_OPTS: '-Xmx2g -Xms2g'
+#      discovery.type: single-node
+#      ES_JAVA_OPTS: -Xmx256m -Xms256m
+#    volumes:
+#      - ./data/elastic-data:/usr/share/elasticsearch/data
+#    networks:
+#      - web3
+#
+#  logstash:
+#    image: logstash:7.16.2
+#    container_name: logstash
+#    depends_on:
+#      - elasticsearch
+#    ports:
+#      - 5000:5000
+#    environment:
+#      LS_JAVA_OPTS: -Xmx256m -Xms256m
+#    volumes:
+#      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+#      - ./logstash/pipeline/logstash.yml:/usr/share/logstash/pipeline/logstash.yml
 #    networks:
 #      - web3
 #
 #  kibana:
-#    image: kibana:7.8.1
-#    volumes:
-#      - ./kibana.yml:/usr/share/kibana/config/kibana.yml
+#    image: kibana:7.16.2
+#    container_name: kibana
+#    depends_on:
+#      - elasticsearch
 #    ports:
 #      - 5601:5601
+#    environment:
+#      - ELASTICSEARCH_URL=http://elasticsearch:9200
+#      - NODE_OPTIONS=--max-old-space-size=2048
 #    networks:
 #      - web3
+
+volumes:
+  mongo-data:
+#  elastic-data:
+#    driver: local
