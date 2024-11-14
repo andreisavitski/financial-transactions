@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
     <appender name="CONSOLE"
               class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
@@ -10,56 +12,32 @@
         </layout>
     </appender>
 
-<!--    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
-<!--        <file>./log/application.log</file>-->
-<!--        <append>true</append>-->
-<!--        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>-->
-<!--        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">-->
-<!--            <fileNamePattern>./log/application.%d.%i.log.gz</fileNamePattern>-->
-<!--            <maxFileSize>10MB</maxFileSize>-->
-<!--        </rollingPolicy>-->
-<!--    </appender>-->
-
-<!--    <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">-->
-<!--        <destination>logstash:4560</destination>-->
-<!--        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">-->
-<!--            <providers>-->
-<!--                <timestamp>-->
-<!--                    <timeZone>UTC</timeZone>-->
-<!--                </timestamp>-->
-<!--                <pattern>-->
-<!--                    <pattern>-->
-<!--                        {-->
-<!--                        "logLevel": "%level",-->
-<!--                        "serviceName": "${springAppName:-}",-->
-<!--                        "pid": "${PID:-}",-->
-<!--                        "thread": "%thread",-->
-<!--                        "class": "%logger{40}",-->
-<!--                        "rest": "%message"-->
-<!--                        }-->
-<!--                    </pattern>-->
-<!--                </pattern>-->
-<!--            </providers>-->
-<!--        </encoder>-->
-<!--        <encoder class="net.logstash.logback.encoder.LogstashEncoder">-->
-<!--            <includeCallerData>true</includeCallerData>-->
-<!--        </encoder>-->
-<!--    </appender>-->
-
-<!--    <appender name="STASH" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
-<!--        <file>logback/redditApp.log</file>-->
-<!--        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
-<!--            <fileNamePattern>logback/redditApp.%d{yyyy-MM-dd}.log</fileNamePattern>-->
-<!--            <maxHistory>7</maxHistory>-->
-<!--        </rollingPolicy>-->
-<!--        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>-->
-<!--    </appender>-->
+    <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <destination>localhost:5000</destination>
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <mdc />
+                <context />
+                <logLevel />
+                <loggerName />
+                <pattern>
+                    <pattern>
+                        {
+                        "app": "financial-transactions-log"
+                        }
+                    </pattern>
+                </pattern>
+                <threadName />
+                <message />
+                <logstashMarkers />
+                <stackTrace />
+            </providers>
+        </encoder>
+    </appender>
 
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
-<!--        <appender-ref ref="FILE" />-->
-<!--        <appender-ref ref="LOGSTASH" />-->
-<!--        <appender-ref ref="STASH"/>-->
+        <appender-ref ref="LOGSTASH"/>
     </root>
 
 </configuration>

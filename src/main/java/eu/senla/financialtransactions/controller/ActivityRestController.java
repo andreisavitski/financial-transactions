@@ -7,7 +7,6 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static eu.senla.financialtransactions.constant.AppConstants.*;
 
-@Slf4j
 @RestController
 @RequestMapping("/api/v1/activity")
 @RequiredArgsConstructor
@@ -29,14 +27,14 @@ public class ActivityRestController {
     @NotNull
     @GetMapping
     @PreAuthorize("hasAuthority(@permissionProvider.getPermissionForPayment())")
-    public Page<ActivityDto> getAll(
+    public Page<ActivityDto> getAllActivities(
             @NotNull @RequestParam(value = OFFSET,
                     defaultValue = DEFAULT_OFFSET) @Min(0) Integer offset,
             @NotNull @RequestParam(value = LIMIT,
                     defaultValue = DEFAULT_LIMIT) @Min(1) @Max(20) Integer limit,
             @NotNull @RequestParam(value = SORT) ActivitySort sort
     ) {
-        return activityService.findAll(PageRequest.of(
+        return activityService.getAllActivities(PageRequest.of(
                 offset,
                 limit,
                 sort.getSortValue()

@@ -8,5 +8,5 @@ import org.springframework.data.domain.PageRequest;
 public interface ActivityService {
 
     @NotNull
-    Page<ActivityDto> findAll(PageRequest pageRequest);
+    Page<ActivityDto> getAllActivities(PageRequest pageRequest);
 }

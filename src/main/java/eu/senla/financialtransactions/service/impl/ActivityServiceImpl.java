@@ -24,7 +24,7 @@ public class ActivityServiceImpl implements ActivityService {
 
     @NotNull
     @Override
-    public Page<ActivityDto> findAll(@NotNull PageRequest pageRequest) {
+    public Page<ActivityDto> getAllActivities(@NotNull PageRequest pageRequest) {
         final Page<Activity> activitiesPage = activityRepository.findAll(pageRequest);
         final List<ActivityDto> activitiesDtoList = activitiesPage.stream()
                 .map(activityMapper::toDto)
