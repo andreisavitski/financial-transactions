@@ -9,6 +9,7 @@ import eu.senla.financialtransactions.exception.ApplicationException;
 import eu.senla.financialtransactions.mapper.TransferMapper;
 import eu.senla.financialtransactions.repository.ClientRepository;
 import eu.senla.financialtransactions.repository.TransferRepository;
+import eu.senla.financialtransactions.service.ActionService;
 import eu.senla.financialtransactions.service.CardService;
 import eu.senla.financialtransactions.service.TransferService;
 import eu.senla.financialtransactions.util.OperationDataSetter;
@@ -26,13 +27,15 @@ import static eu.senla.financialtransactions.util.OperationDataValidator.validat
 @RequiredArgsConstructor
 public class TransferServiceImpl implements TransferService {
 
+    private final CardService cardService;
+
+    private final ActionService actionService;
+
     private final ClientRepository clientRepository;
 
     private final TransferRepository transferRepository;
 
     private final TransferMapper transferMapper;
-
-    private final CardService cardService;
 
     @NotNull
     @Override
@@ -64,6 +67,7 @@ public class TransferServiceImpl implements TransferService {
         if (messageResponseDtoAfterExecute.getStatus().equals(OK)) {
             OperationDataSetter.setDataAfterExecute(transfer);
             transferRepository.save(transfer);
+            actionService.save(transfer);
         }
         return messageResponseDtoAfterExecute;
     }

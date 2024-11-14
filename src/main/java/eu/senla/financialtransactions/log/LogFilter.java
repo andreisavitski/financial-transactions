@@ -29,7 +29,8 @@ public class LogFilter extends OncePerRequestFilter {
         }
         MDC.put(REQUEST_ID, requestId);
         try {
-            log.info("Started process request with {} : {}", REQUEST_ID, requestId);
+            log.info("Started process request with {} :{}, {}, {}",
+                    REQUEST_ID, requestId, request.getMethod(), request.getRequestURI());
             filterChain.doFilter(request, response);
         } finally {
             MDC.clear();

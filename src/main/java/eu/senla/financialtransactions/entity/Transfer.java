@@ -12,6 +12,6 @@ import lombok.Setter;
 @Table(name = "transfer")
 public class Transfer extends Operation {
 
-    @Column(name = "top_up_card_id")
+    @Column(name = "target_card_id")
     private Long targetCardId;
 }

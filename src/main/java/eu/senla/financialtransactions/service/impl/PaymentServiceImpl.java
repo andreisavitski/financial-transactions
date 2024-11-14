@@ -1,15 +1,18 @@
 package eu.senla.financialtransactions.service.impl;
 
-import eu.senla.financialtransactions.dto.*;
+import eu.senla.financialtransactions.dto.MessageResponseDto;
+import eu.senla.financialtransactions.dto.PaymentRequestDto;
+import eu.senla.financialtransactions.dto.PaymentRequestMessageDto;
+import eu.senla.financialtransactions.dto.UuidDto;
 import eu.senla.financialtransactions.entity.Client;
 import eu.senla.financialtransactions.entity.Payment;
 import eu.senla.financialtransactions.exception.ApplicationException;
 import eu.senla.financialtransactions.mapper.PaymentMapper;
 import eu.senla.financialtransactions.repository.ClientRepository;
 import eu.senla.financialtransactions.repository.PaymentRepository;
+import eu.senla.financialtransactions.service.ActionService;
 import eu.senla.financialtransactions.service.CardService;
 import eu.senla.financialtransactions.service.PaymentService;
-import eu.senla.financialtransactions.service.rabbitmq.RabbitMqMessagePaymentSender;
 import eu.senla.financialtransactions.util.OperationDataSetter;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +31,8 @@ import static eu.senla.financialtransactions.util.OperationDataValidator.validat
 public class PaymentServiceImpl implements PaymentService {
 
     private final CardService cardService;
+
+    private final ActionService actionService;
 
     private final ClientRepository clientRepository;
 
@@ -59,6 +64,7 @@ public class PaymentServiceImpl implements PaymentService {
         if (messageResponseDtoAfterExecute.getStatus().equals(OK)) {
             setDataAfterExecute(payment);
             paymentRepository.save(payment);
+            actionService.save(payment);
         }
         return messageResponseDtoAfterExecute;
     }
