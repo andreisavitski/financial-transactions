@@ -1,11 +1,4 @@
-server:
-  port: 8085
-  servlet:
-    context-path: /financial-transactions
 spring:
-  application:
-    name: financial-transactions
-
   config:
     import: 'optional:configserver:'
   cloud:

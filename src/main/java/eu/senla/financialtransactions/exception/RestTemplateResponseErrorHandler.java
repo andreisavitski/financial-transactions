@@ -26,10 +26,9 @@ public class RestTemplateResponseErrorHandler implements ResponseErrorHandler {
                 .is5xxServerError()) {
             throw new HttpClientErrorException(httpResponse.getStatusCode());
         } else if (httpResponse.getStatusCode()
-                .is4xxClientError()) {
-            if (httpResponse.getStatusCode() == HttpStatus.NOT_FOUND) {
-                throw new RuntimeException();
-            }
+                .is4xxClientError() && httpResponse.getStatusCode() == HttpStatus.NOT_FOUND) {
+            throw new IllegalArgumentException();
         }
+
     }
 }

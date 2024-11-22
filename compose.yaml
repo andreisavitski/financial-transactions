@@ -34,20 +34,20 @@ services:
   #    networks:
   #      - web3
 
-  authorization-backend:
-    image: authorization-backend:latest
-    container_name: authorization-backend
-    ports:
-      - "8083:8083"
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://bankdb:5432/bankdb
-      - POSTGRES_USER=${DB_USER:-postgres}
-      - POSTGRES_PASSWORD=${DB_PASSWORD:-sa}
-      - eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka/
-    depends_on:
-      - bankdb
-    networks:
-      - web3
+#  authorization-backend:
+#    image: authorization-backend:latest
+#    container_name: authorization-backend
+#    ports:
+#      - "8083:8083"
+#    environment:
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://bankdb:5432/bankdb
+#      - POSTGRES_USER=${DB_USER:-postgres}
+#      - POSTGRES_PASSWORD=${DB_PASSWORD:-sa}
+#      - eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka/
+#    depends_on:
+#      - bankdb
+#    networks:
+#      - web3
 
   bankdb:
     image: postgres:14.9

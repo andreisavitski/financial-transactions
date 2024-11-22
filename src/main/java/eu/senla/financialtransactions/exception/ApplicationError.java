@@ -18,8 +18,6 @@ public enum ApplicationError implements AppError, Supplier<ApplicationException>
 
     TRANSFER_NOT_FOUND(NOT_FOUND, "Transfer not found"),
 
-    TRANSFER_NOT_COMPLETED(NOT_FOUND, "The transfer not completed. Something went wrong:("),
-
     ALREADY_COMPLETED(BAD_REQUEST, "Already completed");
 
     private final HttpStatus status;

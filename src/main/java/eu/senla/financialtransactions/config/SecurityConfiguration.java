@@ -1,6 +1,6 @@
 package eu.senla.financialtransactions.config;
 
-import eu.senla.financialtransactions.service.security.JwtAuthenticationFilter;
+import eu.senla.financialtransactions.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
