@@ -1,6 +1,8 @@
 package eu.senla.financialtransactions.exception;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 import java.util.function.Supplier;
@@ -8,6 +10,8 @@ import java.util.function.Supplier;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
+@Getter
+@AllArgsConstructor
 public enum ApplicationError implements AppError, Supplier<ApplicationException> {
 
     NOT_ENOUGH_FUNDS(BAD_REQUEST, "Not enough funds on the card"),
@@ -24,26 +28,9 @@ public enum ApplicationError implements AppError, Supplier<ApplicationException>
 
     private final String code;
 
-    ApplicationError(HttpStatus status, String code) {
-        this.status = status;
-        this.code = code;
-    }
-
     @NotNull
     @Override
     public ApplicationException get() {
         return new ApplicationException(this);
-    }
-
-    @NotNull
-    @Override
-    public final HttpStatus getStatus() {
-        return status;
-    }
-
-    @NotNull
-    @Override
-    public final String getCode() {
-        return code;
     }
 }

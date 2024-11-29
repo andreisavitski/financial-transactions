@@ -22,7 +22,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static eu.senla.financialtransactions.constant.AppConstants.*;
+import static eu.senla.financialtransactions.constant.AppConstants.AUTHORITIES;
+import static eu.senla.financialtransactions.constant.AppConstants.BEARER_PREFIX;
+import static eu.senla.financialtransactions.constant.AppConstants.BEGIN_INDEX_HEADER_SUBSTRING;
+import static eu.senla.financialtransactions.constant.AppConstants.HEADER_NAME;
+import static eu.senla.financialtransactions.constant.AppConstants.JWT_KEY;
 import static io.jsonwebtoken.io.Decoders.BASE64;
 
 @Component
@@ -41,7 +45,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String username = null;
         List<GrantedAuthority> authorities = new ArrayList<>();
         if (header != null && header.startsWith(BEARER_PREFIX)) {
-            token = header.substring(7);
+            token = header.substring(BEGIN_INDEX_HEADER_SUBSTRING);
             final SecretKey secret = Keys.hmacShaKeyFor(BASE64.decode(jwtKey));
             final Claims claims = Jwts.parser()
                     .verifyWith(secret)

@@ -26,7 +26,8 @@ public class RabbitMqMessagePaymentSenderImpl implements RabbitMqMessagePaymentS
 
     @NotNull
     @Override
-    public Message sendMessageForPayment(@NotNull PaymentRequestMessageDto paymentRequestMessageDto) {
+    public Message sendMessageForPayment(
+            @NotNull PaymentRequestMessageDto paymentRequestMessageDto) {
         return sender.convertAndSendMessage(
                 paymentRequestMessageDto, queueRequestForPayment, exchangeCard);
     }

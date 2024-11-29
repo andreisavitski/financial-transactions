@@ -15,8 +15,7 @@ import static eu.senla.financialtransactions.enums.Status.IN_PROGRESS;
 public class OperationDataSetter {
 
     @NotNull
-    public static void setDataAfterCheck(@NotNull Operation operation,
-                                              @NotNull Client client) {
+    public static void setDataAfterCheck(@NotNull Operation operation, @NotNull Client client) {
         operation.setClient(client);
         operation.setId(UUID.randomUUID());
         operation.setStatus(IN_PROGRESS);

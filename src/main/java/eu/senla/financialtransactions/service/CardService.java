@@ -10,8 +10,7 @@ public interface CardService {
     MessageResponseDto getClientCard(@NotNull Long id);
 
     @NotNull
-    MessageResponseDto executeTransferMoney(
-            @NotNull TransferRequestDto transferRequestDto);
+    MessageResponseDto executeTransferMoney(@NotNull TransferRequestDto transferRequestDto);
 
     @NotNull
     MessageResponseDto executeWithdrawalOfMoney(

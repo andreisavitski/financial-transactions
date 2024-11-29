@@ -23,7 +23,8 @@ public class OperationDataValidator {
         final List<CardDto> cards = MessageConverter.convertToListObjects(data, CardDto.class);
         final CardDto writeOffCardDto =
                 CardExtractor.getCardFromListByCardId(cards, operation.getWriteOffCardId());
-        if (writeOffCardDto.getAmount().compareTo(operation.getAmount()) < MINIMUM_TRANSFER_THRESHOLD) {
+        if (writeOffCardDto.getAmount()
+                .compareTo(operation.getAmount()) < MINIMUM_TRANSFER_THRESHOLD) {
             throw new ApplicationException(NOT_ENOUGH_FUNDS);
         }
 

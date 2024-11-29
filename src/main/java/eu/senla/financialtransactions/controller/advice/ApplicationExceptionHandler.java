@@ -21,7 +21,8 @@ public class ApplicationExceptionHandler {
             @NotNull ApplicationException applicationException) {
         return ResponseEntity.status(
                 applicationException.getStatus()).body(
-                new ErrorResponseDTO(applicationException.getStatus(), applicationException.getMessage())
+                new ErrorResponseDTO(applicationException.getStatus(),
+                        applicationException.getMessage())
         );
     }
 

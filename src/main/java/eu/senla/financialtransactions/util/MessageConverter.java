@@ -22,8 +22,7 @@ public class MessageConverter {
     }
 
     @NotNull
-    public static <T> List<T> convertToListObjects(@NotNull Object o,
-                                                   @NotNull Class<T> clazz) {
+    public static <T> List<T> convertToListObjects(@NotNull Object o, @NotNull Class<T> clazz) {
         return ((List<?>) o).stream()
                 .map(map -> objectMapper.convertValue(map, clazz))
                 .toList();

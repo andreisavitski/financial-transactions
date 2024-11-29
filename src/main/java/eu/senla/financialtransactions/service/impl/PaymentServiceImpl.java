@@ -43,9 +43,11 @@ public class PaymentServiceImpl implements PaymentService {
     @NotNull
     @Override
     public UuidDto checkPayment(@NotNull PaymentRequestDto paymentRequestDto) {
-        final Client client = clientRepository.findById(paymentRequestDto.getClientId()).orElseThrow(() -> new ApplicationException(CLIENT_NOT_FOUND));
+        final Client client = clientRepository.findById(paymentRequestDto.getClientId())
+                .orElseThrow(() -> new ApplicationException(CLIENT_NOT_FOUND));
         final Payment payment = paymentMapper.toPayment(paymentRequestDto);
-        final MessageResponseDto messageResponseDto = cardService.getClientCard(payment.getClient().getId());
+        final MessageResponseDto messageResponseDto =
+                cardService.getClientCard(payment.getClient().getId());
         validateDataForCheck(payment, messageResponseDto);
         OperationDataSetter.setDataAfterCheck(payment, client);
         paymentRepository.save(payment);
@@ -56,11 +58,15 @@ public class PaymentServiceImpl implements PaymentService {
     @NotNull
     @Override
     public MessageResponseDto executePayment(@NotNull UuidDto uuidDto) {
-        final Payment payment = paymentRepository.findById(uuidDto.getId()).orElseThrow(() -> new ApplicationException(TRANSFER_NOT_FOUND));
-        final MessageResponseDto messageResponseDto = cardService.getClientCard(payment.getClient().getId());
+        final Payment payment = paymentRepository.findById(uuidDto.getId()).orElseThrow(
+                () -> new ApplicationException(TRANSFER_NOT_FOUND));
+        final MessageResponseDto messageResponseDto =
+                cardService.getClientCard(payment.getClient().getId());
         validateDataForExecute(payment, messageResponseDto);
-        final PaymentRequestMessageDto paymentRequestDto = paymentMapper.toPaymentMessageRequestDto(payment);
-        final MessageResponseDto messageResponseDtoAfterExecute = cardService.executeWithdrawalOfMoney(paymentRequestDto);
+        final PaymentRequestMessageDto paymentRequestDto =
+                paymentMapper.toPaymentMessageRequestDto(payment);
+        final MessageResponseDto messageResponseDtoAfterExecute =
+                cardService.executeWithdrawalOfMoney(paymentRequestDto);
         if (messageResponseDtoAfterExecute.getStatus().equals(OK)) {
             setDataAfterExecute(payment);
             paymentRepository.save(payment);

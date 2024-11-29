@@ -14,7 +14,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static eu.senla.financialtransactions.constant.AppConstants.*;
+import static eu.senla.financialtransactions.constant.AppConstants.MAXIMUM_ATTEMPTS_FOR_SIMPLE_RETRY_POLICY;
+import static eu.senla.financialtransactions.constant.AppConstants.RABBITMQ_EXCHANGE_CARD;
+import static eu.senla.financialtransactions.constant.AppConstants.RABBITMQ_QUEUE_REQUEST_FOR_GET_CARD;
+import static eu.senla.financialtransactions.constant.AppConstants.RABBITMQ_QUEUE_REQUEST_FOR_PAYMENT;
+import static eu.senla.financialtransactions.constant.AppConstants.RABBITMQ_QUEUE_REQUEST_FOR_TRANSFER;
+import static eu.senla.financialtransactions.constant.AppConstants.RABBITMQ_ROUTING_KEY_FOR_REQUEST_GET_CARD;
+import static eu.senla.financialtransactions.constant.AppConstants.RABBITMQ_ROUTING_KEY_FOR_REQUEST_PAYMENT;
+import static eu.senla.financialtransactions.constant.AppConstants.RABBITMQ_ROUTING_KEY_FOR_REQUEST_TRANSFER;
 
 @Configuration
 public class RabbitMqConfiguration {
@@ -98,7 +105,7 @@ public class RabbitMqConfiguration {
         factory.setAdviceChain(
                 RetryInterceptorBuilder
                         .stateless()
-                        .maxAttempts(5)
+                        .maxAttempts(MAXIMUM_ATTEMPTS_FOR_SIMPLE_RETRY_POLICY)
                         .recoverer(new RejectAndDontRequeueRecoverer())
                         .build()
         );

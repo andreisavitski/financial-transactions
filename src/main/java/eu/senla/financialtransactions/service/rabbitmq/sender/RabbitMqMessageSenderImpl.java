@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.concurrent.Exchanger;
 
+import static eu.senla.financialtransactions.constant.AppConstants.TIMEOUT_EXCHANGER;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 @Service
@@ -37,6 +38,6 @@ public class RabbitMqMessageSenderImpl implements RabbitMqMessageSender {
                     messagePostProcessor.getMessageProperties().setCorrelationId(correlationId);
                     return messagePostProcessor;
                 });
-        return exchanger.exchange(null, 5, SECONDS);
+        return exchanger.exchange(null, TIMEOUT_EXCHANGER, SECONDS);
     }
 }
