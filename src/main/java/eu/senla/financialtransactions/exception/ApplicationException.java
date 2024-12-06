@@ -19,10 +19,4 @@ public class ApplicationException extends RuntimeException {
         this.status = appError.getStatus();
         this.code = appError.getCode();
     }
-
-    public ApplicationException(HttpStatus status, String message, String code) {
-        super(message);
-        this.status = status;
-        this.code = code;
-    }
 }

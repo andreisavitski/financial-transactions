@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.senla.financialtransactions.util.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
 @Configuration
 public class AppConfiguration {

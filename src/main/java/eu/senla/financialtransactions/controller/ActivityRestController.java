@@ -15,7 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import static eu.senla.financialtransactions.constant.AppConstants.*;
+import static eu.senla.financialtransactions.constant.AppConstants.DEFAULT_LIMIT;
+import static eu.senla.financialtransactions.constant.AppConstants.DEFAULT_OFFSET;
+import static eu.senla.financialtransactions.constant.AppConstants.LIMIT;
+import static eu.senla.financialtransactions.constant.AppConstants.MAX_LIMIT;
+import static eu.senla.financialtransactions.constant.AppConstants.MIN_LIMIT;
+import static eu.senla.financialtransactions.constant.AppConstants.MIN_OFFSET;
+import static eu.senla.financialtransactions.constant.AppConstants.OFFSET;
+import static eu.senla.financialtransactions.constant.AppConstants.SORT;
 
 @RestController
 @RequestMapping("/api/v1/activity")
@@ -29,9 +36,9 @@ public class ActivityRestController {
     @PreAuthorize("hasAuthority(@permissionProvider.getPermissionForPayment())")
     public Page<ActivityDto> getAllActivities(
             @NotNull @RequestParam(value = OFFSET,
-                    defaultValue = DEFAULT_OFFSET) @Min(0) Integer offset,
+                    defaultValue = DEFAULT_OFFSET) @Min(MIN_OFFSET) Integer offset,
             @NotNull @RequestParam(value = LIMIT,
-                    defaultValue = DEFAULT_LIMIT) @Min(1) @Max(20) Integer limit,
+                    defaultValue = DEFAULT_LIMIT) @Min(MIN_LIMIT) @Max(MAX_LIMIT) Integer limit,
             @NotNull @RequestParam(value = SORT) ActivitySort sort
     ) {
         return activityService.getAllActivities(PageRequest.of(

@@ -8,10 +8,8 @@ import jakarta.validation.constraints.NotNull;
 public interface TransferService {
 
     @NotNull
-    UuidDto checkTransfer(
-            @NotNull TransferRequestDto transferCheckRequest);
+    UuidDto checkTransfer(@NotNull TransferRequestDto transferCheckRequest);
 
     @NotNull
-    MessageResponseDto executeTransfer(
-            @NotNull UuidDto uuidDto);
+    MessageResponseDto executeTransfer(@NotNull UuidDto uuidDto);
 }

@@ -1,4 +1,4 @@
-package eu.senla.financialtransactions.service.security;
+package eu.senla.financialtransactions.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -7,8 +7,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -22,7 +22,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static eu.senla.financialtransactions.constant.AppConstants.*;
+import static eu.senla.financialtransactions.constant.AppConstants.AUTHORITIES;
+import static eu.senla.financialtransactions.constant.AppConstants.BEARER_PREFIX;
+import static eu.senla.financialtransactions.constant.AppConstants.BEGIN_INDEX_HEADER_SUBSTRING;
+import static eu.senla.financialtransactions.constant.AppConstants.HEADER_NAME;
+import static eu.senla.financialtransactions.constant.AppConstants.JWT_KEY;
 import static io.jsonwebtoken.io.Decoders.BASE64;
 
 @Component
@@ -32,16 +36,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private String jwtKey;
 
     @Override
-    protected void doFilterInternal(@NotNull HttpServletRequest request,
-                                    @NotNull HttpServletResponse response,
-                                    @NotNull FilterChain filterChain)
+    protected void doFilterInternal(@NonNull HttpServletRequest request,
+                                    @NonNull HttpServletResponse response,
+                                    @NonNull FilterChain filterChain)
             throws ServletException, IOException {
         final String header = request.getHeader(HEADER_NAME);
         final String token;
         String username = null;
         List<GrantedAuthority> authorities = new ArrayList<>();
         if (header != null && header.startsWith(BEARER_PREFIX)) {
-            token = header.substring(7);
+            token = header.substring(BEGIN_INDEX_HEADER_SUBSTRING);
             final SecretKey secret = Keys.hmacShaKeyFor(BASE64.decode(jwtKey));
             final Claims claims = Jwts.parser()
                     .verifyWith(secret)

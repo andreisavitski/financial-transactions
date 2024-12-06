@@ -1,5 +1,8 @@
 package eu.senla.financialtransactions.constant;
 
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public class AppConstants {
 
     public static final String RABBITMQ_QUEUE_REQUEST_FOR_GET_CARD =
@@ -66,4 +69,16 @@ public class AppConstants {
     public static final String CLIENT_ID = "clientId";
 
     public static final String SPRING = "spring";
+
+    public static final int MAXIMUM_ATTEMPTS_FOR_SIMPLE_RETRY_POLICY = 5;
+
+    public static final long MIN_OFFSET = 0;
+
+    public static final long MIN_LIMIT = 1;
+
+    public static final long MAX_LIMIT = 20;
+
+    public static final int BEGIN_INDEX_HEADER_SUBSTRING = 7;
+
+    public static final int TIMEOUT_EXCHANGER = 5;
 }

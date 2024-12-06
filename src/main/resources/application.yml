@@ -1,3 +1,10 @@
+server:
+  port: 8085
+  servlet:
+    context-path: /financial-transactions
+
 spring:
   profiles:
     active: dev
+  application:
+    name: financial-transactions

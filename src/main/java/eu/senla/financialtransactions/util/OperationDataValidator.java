@@ -5,6 +5,7 @@ import eu.senla.financialtransactions.dto.MessageResponseDto;
 import eu.senla.financialtransactions.entity.Operation;
 import eu.senla.financialtransactions.exception.ApplicationException;
 import jakarta.validation.constraints.NotNull;
+import lombok.experimental.UtilityClass;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import static eu.senla.financialtransactions.enums.Status.DONE;
 import static eu.senla.financialtransactions.exception.ApplicationError.ALREADY_COMPLETED;
 import static eu.senla.financialtransactions.exception.ApplicationError.NOT_ENOUGH_FUNDS;
 
+@UtilityClass
 public class OperationDataValidator {
 
     public static void validateDataForCheck(@NotNull Operation operation,
@@ -21,7 +23,8 @@ public class OperationDataValidator {
         final List<CardDto> cards = MessageConverter.convertToListObjects(data, CardDto.class);
         final CardDto writeOffCardDto =
                 CardExtractor.getCardFromListByCardId(cards, operation.getWriteOffCardId());
-        if (writeOffCardDto.getAmount().compareTo(operation.getAmount()) < MINIMUM_TRANSFER_THRESHOLD) {
+        if (writeOffCardDto.getAmount()
+                .compareTo(operation.getAmount()) < MINIMUM_TRANSFER_THRESHOLD) {
             throw new ApplicationException(NOT_ENOUGH_FUNDS);
         }
 

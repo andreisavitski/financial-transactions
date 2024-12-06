@@ -4,10 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.constraints.NotNull;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import lombok.experimental.UtilityClass;
 
 import java.util.List;
 
 @Setter
+@UtilityClass
 public class MessageConverter {
 
     @Setter
@@ -20,14 +22,7 @@ public class MessageConverter {
     }
 
     @NotNull
-    @SneakyThrows
-    public static byte[] convertToBytes(@NotNull Object object) {
-        return objectMapper.writeValueAsBytes(object);
-    }
-
-    @NotNull
-    public static <T> List<T> convertToListObjects(@NotNull Object o,
-                                                   @NotNull Class<T> clazz) {
+    public static <T> List<T> convertToListObjects(@NotNull Object o, @NotNull Class<T> clazz) {
         return ((List<?>) o).stream()
                 .map(map -> objectMapper.convertValue(map, clazz))
                 .toList();
