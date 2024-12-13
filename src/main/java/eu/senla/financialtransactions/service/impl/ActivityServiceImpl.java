@@ -29,7 +29,6 @@ public class ActivityServiceImpl implements ActivityService {
         final List<ActivityDto> activitiesDtoList = activitiesPage.stream()
                 .map(activityMapper::toDto)
                 .toList();
-        return new PageImpl<>(activitiesDtoList, pageRequest, activitiesPage.getTotalElements()
-        );
+        return new PageImpl<>(activitiesDtoList, pageRequest, activitiesPage.getTotalElements());
     }
 }

@@ -7,11 +7,11 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 
-import static eu.senla.financialtransactions.constant.AppConstants.RABBITMQ_QUEUE_RESPONSE_FOR_TRANSFER;
+import static eu.senla.financialtransactions.constant.RabbitMqConstants.RABBITMQ_QUEUE_RESPONSE_FOR_TRANSFER;
 
 @Service
 @RequiredArgsConstructor
-public class RabbitMqMessageTransferListener {
+public class RabbitMqTransferListener {
 
     private final MessageHandler messageHandler;
 

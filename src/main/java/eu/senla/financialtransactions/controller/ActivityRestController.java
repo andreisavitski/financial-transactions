@@ -39,8 +39,7 @@ public class ActivityRestController {
                     defaultValue = DEFAULT_OFFSET) @Min(MIN_OFFSET) Integer offset,
             @NotNull @RequestParam(value = LIMIT,
                     defaultValue = DEFAULT_LIMIT) @Min(MIN_LIMIT) @Max(MAX_LIMIT) Integer limit,
-            @NotNull @RequestParam(value = SORT) ActivitySort sort
-    ) {
+            @NotNull @RequestParam(value = SORT) ActivitySort sort) {
         return activityService.getAllActivities(PageRequest.of(
                 offset,
                 limit,

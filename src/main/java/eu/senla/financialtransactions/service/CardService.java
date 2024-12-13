@@ -1,5 +1,6 @@
 package eu.senla.financialtransactions.service;
 
+import eu.senla.financialtransactions.dto.ClientCardRequestDto;
 import eu.senla.financialtransactions.dto.MessageResponseDto;
 import eu.senla.financialtransactions.dto.PaymentRequestMessageDto;
 import eu.senla.financialtransactions.dto.TransferRequestDto;
@@ -15,4 +16,7 @@ public interface CardService {
     @NotNull
     MessageResponseDto executeWithdrawalOfMoney(
             @NotNull PaymentRequestMessageDto paymentRequestMessageDto);
+
+    @NotNull
+    MessageResponseDto addCard(@NotNull ClientCardRequestDto clientCardRequestDto);
 }

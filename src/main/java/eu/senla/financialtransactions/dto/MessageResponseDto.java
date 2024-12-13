@@ -15,5 +15,5 @@ public class MessageResponseDto {
 
     private Object data;
 
-    private final List<Exception> exceptions;
+    private List<Exception> exceptions;
 }

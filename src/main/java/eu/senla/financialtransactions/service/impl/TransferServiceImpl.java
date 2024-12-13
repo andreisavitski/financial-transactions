@@ -9,15 +9,14 @@ import eu.senla.financialtransactions.exception.ApplicationException;
 import eu.senla.financialtransactions.mapper.TransferMapper;
 import eu.senla.financialtransactions.repository.ClientRepository;
 import eu.senla.financialtransactions.repository.TransferRepository;
-import eu.senla.financialtransactions.service.ActionService;
 import eu.senla.financialtransactions.service.CardService;
 import eu.senla.financialtransactions.service.TransferService;
 import eu.senla.financialtransactions.util.OperationDataSetter;
+import eu.senla.financialtransactions.util.ResponseOperationHandler;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import static eu.senla.financialtransactions.constant.AppStatusConstant.OK;
 import static eu.senla.financialtransactions.exception.ApplicationError.CLIENT_NOT_FOUND;
 import static eu.senla.financialtransactions.exception.ApplicationError.TRANSFER_NOT_FOUND;
 import static eu.senla.financialtransactions.util.OperationDataValidator.validateDataForCheck;
@@ -29,13 +28,13 @@ public class TransferServiceImpl implements TransferService {
 
     private final CardService cardService;
 
-    private final ActionService actionService;
-
     private final ClientRepository clientRepository;
 
     private final TransferRepository transferRepository;
 
     private final TransferMapper transferMapper;
+
+    private final ResponseOperationHandler responseOperationHandler;
 
     @NotNull
     @Override
@@ -64,11 +63,6 @@ public class TransferServiceImpl implements TransferService {
                 transferMapper.toTransferRequestDto(transfer);
         final MessageResponseDto messageResponseDtoAfterExecute =
                 cardService.executeTransferMoney(transferRequestDto);
-        if (messageResponseDtoAfterExecute.getStatus().equals(OK)) {
-            OperationDataSetter.setDataAfterExecute(transfer);
-            transferRepository.save(transfer);
-            actionService.save(transfer);
-        }
-        return messageResponseDtoAfterExecute;
+        return responseOperationHandler.saveData(messageResponseDtoAfterExecute, transfer);
     }
 }

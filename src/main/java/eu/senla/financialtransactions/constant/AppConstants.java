@@ -5,35 +5,6 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class AppConstants {
 
-    public static final String RABBITMQ_QUEUE_REQUEST_FOR_GET_CARD =
-            "${rabbitmq.queue_request_for_get_card.name}";
-
-    public static final String RABBITMQ_QUEUE_RESPONSE_FOR_GET_CARD =
-            "${rabbitmq.queue_response_for_get_card.name}";
-
-    public static final String RABBITMQ_QUEUE_REQUEST_FOR_TRANSFER =
-            "${rabbitmq.queue_request_for_transfer.name}";
-
-    public static final String RABBITMQ_QUEUE_RESPONSE_FOR_TRANSFER =
-            "${rabbitmq.queue_response_for_transfer.name}";
-
-    public static final String RABBITMQ_QUEUE_REQUEST_FOR_PAYMENT =
-            "${rabbitmq.queue_request_for_payment.name}";
-
-    public static final String RABBITMQ_QUEUE_RESPONSE_FOR_PAYMENT =
-            "${rabbitmq.queue_response_for_payment.name}";
-
-    public static final String RABBITMQ_ROUTING_KEY_FOR_REQUEST_GET_CARD =
-            "${rabbitmq.routing_for_request_get_card.key}";
-
-    public static final String RABBITMQ_ROUTING_KEY_FOR_REQUEST_TRANSFER =
-            "${rabbitmq.routing_for_request_transfer.key}";
-
-    public static final String RABBITMQ_ROUTING_KEY_FOR_REQUEST_PAYMENT =
-            "${rabbitmq.routing_for_request_payment.key}";
-
-    public static final String RABBITMQ_EXCHANGE_CARD = "${rabbitmq.exchange_card.name}";
-
     public static final String JWT_KEY = "${jwt.secret-key}";
 
     public static final String BEARER_PREFIX = "Bearer ";
@@ -68,8 +39,6 @@ public class AppConstants {
 
     public static final String CLIENT_ID = "clientId";
 
-    public static final String SPRING = "spring";
-
     public static final int MAXIMUM_ATTEMPTS_FOR_SIMPLE_RETRY_POLICY = 5;
 
     public static final long MIN_OFFSET = 0;
@@ -81,4 +50,8 @@ public class AppConstants {
     public static final int BEGIN_INDEX_HEADER_SUBSTRING = 7;
 
     public static final int TIMEOUT_EXCHANGER = 5;
+
+    public static final String OK = "ok";
+
+    public static final String ID = "id";
 }
