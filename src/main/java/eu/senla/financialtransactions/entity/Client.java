@@ -7,6 +7,8 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @Table(name = "client")
@@ -15,5 +17,5 @@ public class Client {
 
     @Id
     @Column(name = "id")
-    private Long id;
+    private UUID id;
 }

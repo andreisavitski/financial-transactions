@@ -5,17 +5,18 @@ import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Data
 @Builder
 @Jacksonized
 public class TransferRequestDto {
 
-    private final Long writeOffCardId;
+    private final UUID writeOffCardId;
 
-    private final Long targetCardId;
+    private final UUID targetCardId;
 
     private final BigDecimal amount;
 
-    private final Long clientId;
+    private final UUID clientId;
 }

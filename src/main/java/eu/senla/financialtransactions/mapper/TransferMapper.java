@@ -14,6 +14,10 @@ public interface TransferMapper {
     @Mapping(source = "id", target = "id")
     UuidDto toUuidDto(Transfer transfer);
 
+    @Mapping(target = "status", ignore = true)
+    @Mapping(target = "startDateTime", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "endDateTime", ignore = true)
     @Mapping(source = "clientId", target = "client.id")
     @Mapping(source = "writeOffCardId", target = "writeOffCardId")
     @Mapping(source = "targetCardId", target = "targetCardId")

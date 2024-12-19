@@ -26,7 +26,7 @@ public class Operation {
     private UUID id;
 
     @Column(name = "write_off_card_id")
-    private Long writeOffCardId;
+    private UUID writeOffCardId;
 
     @Column(name = "amount")
     private BigDecimal amount;

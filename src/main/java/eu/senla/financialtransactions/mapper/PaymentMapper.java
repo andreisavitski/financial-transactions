@@ -15,6 +15,10 @@ public interface PaymentMapper {
     @Mapping(source = "id", target = "id")
     UuidDto toUuidDto(Payment payment);
 
+    @Mapping(target = "status", ignore = true)
+    @Mapping(target = "startDateTime", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "endDateTime", ignore = true)
     @Mapping(source = "clientId", target = "client.id")
     @Mapping(source = "operatorId", target = "operatorId")
     @Mapping(source = "amount", target = "amount")

@@ -6,6 +6,8 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @Entity
@@ -13,5 +15,5 @@ import lombok.Setter;
 public class Transfer extends Operation {
 
     @Column(name = "target_card_id")
-    private Long targetCardId;
+    private UUID targetCardId;
 }

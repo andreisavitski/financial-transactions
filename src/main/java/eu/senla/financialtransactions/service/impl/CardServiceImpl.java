@@ -17,6 +17,7 @@ import org.springframework.amqp.core.Message;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 import static eu.senla.financialtransactions.exception.ApplicationError.CLIENT_NOT_FOUND;
 import static eu.senla.financialtransactions.util.MessageConverter.convertToListObjects;
@@ -36,7 +37,7 @@ public class CardServiceImpl implements CardService {
 
     @NotNull
     @Override
-    public MessageResponseDto getClientCard(@NotNull Long id) {
+    public MessageResponseDto getClientCard(@NotNull UUID id) {
         final ClientCardRequestDto clientCardRequestDto = ClientCardRequestDto.builder()
                 .id(id)
                 .build();

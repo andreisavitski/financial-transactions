@@ -13,7 +13,7 @@ public class DepositOpenerMessageDto {
 
     private final UUID depositTypeId;
 
-    private final Long cardId;
+    private final UUID cardId;
 
-    private final Long clientId;
+    private final UUID clientId;
 }

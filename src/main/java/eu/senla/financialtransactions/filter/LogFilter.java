@@ -1,4 +1,4 @@
-package eu.senla.financialtransactions.log;
+package eu.senla.financialtransactions.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

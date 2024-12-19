@@ -14,12 +14,12 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: write_off_card_id
-                  type: bigint
+                  type: uuid
                   constraints:
                     nullable: false
               - column:
                   name: target_card_id
-                  type: bigint
+                  type: uuid
                   constraints:
                     nullable: false
               - column:
@@ -40,7 +40,7 @@ databaseChangeLog:
                   type: timestamp without time zone(6)
               - column:
                   name: client_id
-                  type: bigint
+                  type: uuid
         - addForeignKeyConstraint:
             baseColumnNames: client_id
             baseTableName: transfer
