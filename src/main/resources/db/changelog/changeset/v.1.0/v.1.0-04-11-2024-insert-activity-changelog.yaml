@@ -8,7 +8,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  value: 2545
+                  value: fe359d5a-9200-4b96-9ed0-87a78aeb6c90
               - column:
                   name: name
                   value: mobile_communication
@@ -17,7 +17,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  value: 4533
+                  value: e6a33524-62e5-4f71-816e-328a16ea9e4a
               - column:
                   name: name
                   value: internet
@@ -26,7 +26,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  value: 2343
+                  value: 5f356fcc-4021-4caa-a82e-afdd42bd0e52
               - column:
                   name: name
                   value: public_utilities

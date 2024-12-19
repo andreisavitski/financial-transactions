@@ -4,14 +4,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
 @Builder
 @Jacksonized
-public class OperatorDto {
+public class DepositUpdaterMessageDto {
 
-    private final UUID id;
+    private final UUID depositId;
 
-    private final String name;
+    private final BigDecimal contributionAmount;
 }

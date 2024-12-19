@@ -5,41 +5,48 @@ import eu.senla.financialtransactions.dto.ClientCardRequestDto;
 import eu.senla.financialtransactions.dto.MessageResponseDto;
 import eu.senla.financialtransactions.dto.PaymentRequestMessageDto;
 import eu.senla.financialtransactions.dto.TransferRequestDto;
+import eu.senla.financialtransactions.exception.ApplicationException;
+import eu.senla.financialtransactions.repository.ClientRepository;
 import eu.senla.financialtransactions.service.CardService;
-import eu.senla.financialtransactions.service.rabbitmq.RabbitMqMessageCardSender;
-import eu.senla.financialtransactions.service.rabbitmq.RabbitMqMessagePaymentSender;
-import eu.senla.financialtransactions.service.rabbitmq.RabbitMqMessageTransferSender;
-import eu.senla.financialtransactions.util.MessageConverter;
+import eu.senla.financialtransactions.service.rabbitmq.RabbitMqCardSender;
+import eu.senla.financialtransactions.service.rabbitmq.RabbitMqPaymentSender;
+import eu.senla.financialtransactions.service.rabbitmq.RabbitMqTransferSender;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.Message;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
+
+import static eu.senla.financialtransactions.exception.ApplicationError.CLIENT_NOT_FOUND;
+import static eu.senla.financialtransactions.util.MessageConverter.convertToListObjects;
+import static eu.senla.financialtransactions.util.MessageConverter.convertToObj;
 
 @Service
 @RequiredArgsConstructor
 public class CardServiceImpl implements CardService {
 
-    private final RabbitMqMessageCardSender cardSender;
+    private final RabbitMqCardSender cardSender;
 
-    private final RabbitMqMessageTransferSender transferSender;
+    private final RabbitMqTransferSender transferSender;
 
-    private final RabbitMqMessagePaymentSender paymentSender;
+    private final RabbitMqPaymentSender paymentSender;
 
+    private final ClientRepository clientRepository;
+
+    @NotNull
     @Override
-    public MessageResponseDto getClientCard(Long id) {
+    public MessageResponseDto getClientCard(@NotNull UUID id) {
         final ClientCardRequestDto clientCardRequestDto = ClientCardRequestDto.builder()
                 .id(id)
                 .build();
-        final Message message = cardSender.sendRequestForCard(clientCardRequestDto);
+        final Message message = cardSender.sendRequestForGetCard(clientCardRequestDto);
         final MessageResponseDto messageResponseDto =
-                MessageConverter.convertToObj(message.getBody(), MessageResponseDto.class);
-        final List<CardDto> cards =
-                MessageConverter.convertToListObjects(messageResponseDto.getData(), CardDto.class);
+                convertToObj(message.getBody(), MessageResponseDto.class);
+        final List<CardDto> cards = convertToListObjects(messageResponseDto.getData(), CardDto.class);
         messageResponseDto.setData(cards);
         return messageResponseDto;
-
     }
 
     @NotNull
@@ -47,7 +54,7 @@ public class CardServiceImpl implements CardService {
     public MessageResponseDto executeTransferMoney(
             @NotNull TransferRequestDto transferRequestDto) {
         final Message message = transferSender.sendMessageForTransfer(transferRequestDto);
-        return MessageConverter.convertToObj(message.getBody(), MessageResponseDto.class);
+        return convertToObj(message.getBody(), MessageResponseDto.class);
     }
 
     @NotNull
@@ -55,6 +62,16 @@ public class CardServiceImpl implements CardService {
     public MessageResponseDto executeWithdrawalOfMoney(
             @NotNull PaymentRequestMessageDto paymentRequestMessageDto) {
         final Message message = paymentSender.sendMessageForPayment(paymentRequestMessageDto);
-        return MessageConverter.convertToObj(message.getBody(), MessageResponseDto.class);
+        return convertToObj(message.getBody(), MessageResponseDto.class);
+    }
+
+    @NotNull
+    @Override
+    public MessageResponseDto addCard(@NotNull ClientCardRequestDto clientCardRequestDto) {
+        if (clientRepository.findById(clientCardRequestDto.getId()).isPresent()) {
+            final Message message = cardSender.sendRequestForAddCard(clientCardRequestDto);
+            return convertToObj(message.getBody(), MessageResponseDto.class);
+        }
+        throw new ApplicationException(CLIENT_NOT_FOUND);
     }
 }

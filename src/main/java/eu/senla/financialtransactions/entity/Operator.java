@@ -9,6 +9,8 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 import static jakarta.persistence.FetchType.LAZY;
 
 @Getter
@@ -19,7 +21,7 @@ public class Operator {
 
     @Id
     @Column(name = "id")
-    private Long id;
+    private UUID id;
 
     @Column(name = "name")
     private String name;

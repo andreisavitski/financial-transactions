@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.experimental.UtilityClass;
 
 import java.util.List;
+import java.util.UUID;
 
 import static eu.senla.financialtransactions.exception.ApplicationError.CARD_NOT_FOUND;
 
@@ -14,12 +15,10 @@ public class CardExtractor {
 
     @NotNull
     public static CardDto getCardFromListByCardId(@NotNull List<CardDto> cards,
-                                                  @NotNull Long cardId) {
+                                                  @NotNull UUID cardId) {
         return cards.stream()
                 .filter(cardDto -> cardDto.getId().equals(cardId))
                 .findFirst()
-                .orElseThrow(
-                        () -> new ApplicationException(CARD_NOT_FOUND)
-                );
+                .orElseThrow(() -> new ApplicationException(CARD_NOT_FOUND));
     }
 }

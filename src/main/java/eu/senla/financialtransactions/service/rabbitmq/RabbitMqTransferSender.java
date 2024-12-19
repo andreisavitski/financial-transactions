@@ -4,7 +4,7 @@ import eu.senla.financialtransactions.dto.TransferRequestDto;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.amqp.core.Message;
 
-public interface RabbitMqMessageTransferSender {
+public interface RabbitMqTransferSender {
 
     @NotNull
     Message sendMessageForTransfer(@NotNull TransferRequestDto transferRequestDto);

@@ -4,16 +4,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 
-import java.util.List;
+import java.util.UUID;
 
 @Data
 @Builder
 @Jacksonized
-public class MessageResponseDto {
+public class DepositOpenerMessageDto {
 
-    private final String status;
+    private final UUID depositTypeId;
 
-    private Object data;
+    private final UUID cardId;
 
-    private List<Exception> exceptions;
+    private final UUID clientId;
 }

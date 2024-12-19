@@ -22,6 +22,12 @@ public enum ApplicationError implements AppError, Supplier<ApplicationException>
 
     TRANSFER_NOT_FOUND(NOT_FOUND, "Transfer not found"),
 
+    DEPOSIT_NOT_FOUND(NOT_FOUND, "Deposit not found"),
+
+    ACTION_NOT_FOUND(NOT_FOUND, "Action not found"),
+
+    INCORRECT_DATA(BAD_REQUEST, "Incorrect data"),
+
     ALREADY_COMPLETED(BAD_REQUEST, "Already completed");
 
     private final HttpStatus status;

@@ -46,6 +46,10 @@ rabbitmq:
     name: request_get_card
   queue_response_for_get_card:
     name: response_get_card
+  queue_request_for_add_card:
+    name: request_add_card
+  queue_response_for_add_card:
+    name: response_add_card
   queue_request_for_transfer:
     name: request_transfer
   queue_response_for_transfer:
@@ -54,17 +58,33 @@ rabbitmq:
     name: request_payment
   queue_response_for_payment:
     name: response_payment
+  queue_request_for_open_deposit:
+    name: request_open_deposit
+  queue_response_for_open_deposit:
+    name: response_open_deposit
+  queue_request_for_update_deposit:
+    name: request_update_deposit
+  queue_response_for_update_deposit:
+    name: response_update_deposit
   routing_for_request_get_card:
     key: request_get_card
+  routing_for_request_add_card:
+    key: request_add_card
   routing_for_request_transfer:
     key: request_transfer
   routing_for_request_payment:
     key: request_payment
+  routing_for_request_open_deposit:
+    key: request_open_deposit
+  routing_for_request_update_deposit:
+    key: request_update_deposit
 
 permissions:
   permission_for_transfer: transferMoneyBetweenYourAccounts
   permission_for_get_client_card: viewMyCards
+  permission_for_add_card: addCard
   permission_for_payment: executionOfPayments
+  permission-for-deposit: deposit
 
 jwt:
   secret-key: 53A73E5F1C4E0A2D3B5F2D784E6A1B423D6F247D1F6E5C3A596D635A75327855

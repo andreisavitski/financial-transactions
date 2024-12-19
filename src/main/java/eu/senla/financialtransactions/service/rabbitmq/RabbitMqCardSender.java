@@ -4,8 +4,11 @@ import eu.senla.financialtransactions.dto.ClientCardRequestDto;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.amqp.core.Message;
 
-public interface RabbitMqMessageCardSender {
+public interface RabbitMqCardSender {
 
     @NotNull
-    Message sendRequestForCard(@NotNull ClientCardRequestDto clientCardRequestDto);
+    Message sendRequestForGetCard(@NotNull ClientCardRequestDto clientCardRequestDto);
+
+    @NotNull
+    Message sendRequestForAddCard(@NotNull ClientCardRequestDto clientCardRequestDto);
 }
