@@ -7,6 +7,7 @@ import eu.senla.financialtransactions.repository.ActionRepository;
 import eu.senla.financialtransactions.service.ActionService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;

@@ -7,10 +7,13 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: sa
-    url: jdbc:postgresql://localhost:5433/bankdb
+    url: jdbc:postgresql://localhost:5432/bankdb
+    hikari:
+      connection-timeout: 2000
+      initialization-fail-timeout: 0
+      maximum-pool-size: 300
 
   jpa:
-    format-sql: true
     hibernate:
       ddl-auto: validate
     open-in-view: false
@@ -32,6 +35,7 @@ spring:
     port: 5672
     username: admin
     password: admin
+    connection-timeout: 2000
 
 management:
   endpoints:
@@ -66,6 +70,8 @@ rabbitmq:
     name: request_update_deposit
   queue_response_for_update_deposit:
     name: response_update_deposit
+  queue_request_for_save_action:
+    name: request_save_action
   routing_for_request_get_card:
     key: request_get_card
   routing_for_request_add_card:
@@ -78,13 +84,15 @@ rabbitmq:
     key: request_open_deposit
   routing_for_request_update_deposit:
     key: request_update_deposit
+  routing_for_request_save_action:
+    key: request_save_action
 
 permissions:
   permission_for_transfer: transferMoneyBetweenYourAccounts
   permission_for_get_client_card: viewMyCards
   permission_for_add_card: addCard
   permission_for_payment: executionOfPayments
-  permission-for-deposit: deposit
+  permission-for-deposit: rfgj
 
 jwt:
   secret-key: 53A73E5F1C4E0A2D3B5F2D784E6A1B423D6F247D1F6E5C3A596D635A75327855
