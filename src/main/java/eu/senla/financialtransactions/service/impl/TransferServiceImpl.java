@@ -41,9 +41,7 @@ public class TransferServiceImpl implements TransferService {
     public UuidDto checkTransfer(
             @NotNull TransferRequestDto transferRequestDto) {
         final Client client = clientRepository.findById(transferRequestDto.getClientId())
-                .orElseThrow(() -> new ApplicationException(
-                        CLIENT_NOT_FOUND, transferRequestDto.getClientId().toString()
-                ));
+                .orElseThrow(() -> new ApplicationException(CLIENT_NOT_FOUND));
         final Transfer transfer = transferMapper.toTransfer(transferRequestDto);
         final MessageResponseDto messageResponseDto =
                 cardService.getClientCard(transfer.getClient().getId());
