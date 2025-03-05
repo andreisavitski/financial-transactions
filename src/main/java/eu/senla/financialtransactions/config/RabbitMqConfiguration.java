@@ -20,12 +20,14 @@ import static eu.senla.financialtransactions.constant.RabbitMqConstants.RABBITMQ
 import static eu.senla.financialtransactions.constant.RabbitMqConstants.RABBITMQ_QUEUE_REQUEST_FOR_GET_CARD;
 import static eu.senla.financialtransactions.constant.RabbitMqConstants.RABBITMQ_QUEUE_REQUEST_FOR_OPEN_DEPOSIT;
 import static eu.senla.financialtransactions.constant.RabbitMqConstants.RABBITMQ_QUEUE_REQUEST_FOR_PAYMENT;
+import static eu.senla.financialtransactions.constant.RabbitMqConstants.RABBITMQ_QUEUE_REQUEST_FOR_SAVE_ACTION;
 import static eu.senla.financialtransactions.constant.RabbitMqConstants.RABBITMQ_QUEUE_REQUEST_FOR_TRANSFER;
 import static eu.senla.financialtransactions.constant.RabbitMqConstants.RABBITMQ_QUEUE_REQUEST_FOR_UPDATE_DEPOSIT;
 import static eu.senla.financialtransactions.constant.RabbitMqConstants.RABBITMQ_ROUTING_KEY_FOR_REQUEST_ADD_CARD;
 import static eu.senla.financialtransactions.constant.RabbitMqConstants.RABBITMQ_ROUTING_KEY_FOR_REQUEST_GET_CARD;
 import static eu.senla.financialtransactions.constant.RabbitMqConstants.RABBITMQ_ROUTING_KEY_FOR_REQUEST_OPEN_DEPOSIT;
 import static eu.senla.financialtransactions.constant.RabbitMqConstants.RABBITMQ_ROUTING_KEY_FOR_REQUEST_PAYMENT;
+import static eu.senla.financialtransactions.constant.RabbitMqConstants.RABBITMQ_ROUTING_KEY_FOR_REQUEST_SAVE_ACTION;
 import static eu.senla.financialtransactions.constant.RabbitMqConstants.RABBITMQ_ROUTING_KEY_FOR_REQUEST_TRANSFER;
 import static eu.senla.financialtransactions.constant.RabbitMqConstants.RABBITMQ_ROUTING_KEY_FOR_REQUEST_UPDATE_DEPOSIT;
 
@@ -50,6 +52,9 @@ public class RabbitMqConfiguration {
     @Value(RABBITMQ_QUEUE_REQUEST_FOR_UPDATE_DEPOSIT)
     private String queueRequestForUpdateDeposit;
 
+    @Value(RABBITMQ_QUEUE_REQUEST_FOR_SAVE_ACTION)
+    private String queueForSaveAction;
+
     @Value(RABBITMQ_EXCHANGE_CARD)
     private String exchangeCard;
 
@@ -70,6 +75,14 @@ public class RabbitMqConfiguration {
 
     @Value(RABBITMQ_ROUTING_KEY_FOR_REQUEST_UPDATE_DEPOSIT)
     private String routingKeyForRequestUpdateDeposit;
+
+    @Value(RABBITMQ_ROUTING_KEY_FOR_REQUEST_SAVE_ACTION)
+    private String routingKeyForSaveAction;
+
+    @Bean
+    public Queue queueForSaveAction() {
+        return new Queue(queueForSaveAction);
+    }
 
     @Bean
     public Queue queueRequestForGetCard() {
@@ -104,6 +117,14 @@ public class RabbitMqConfiguration {
     @Bean
     public DirectExchange exchangeCard() {
         return new DirectExchange(exchangeCard);
+    }
+
+    @Bean
+    public Binding bindingForRequestSaveAction() {
+        return BindingBuilder
+                .bind(queueForSaveAction())
+                .to(exchangeCard())
+                .with(routingKeyForSaveAction);
     }
 
     @Bean

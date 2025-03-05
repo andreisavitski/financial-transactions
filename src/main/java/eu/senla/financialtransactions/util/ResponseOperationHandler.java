@@ -1,12 +1,14 @@
 package eu.senla.financialtransactions.util;
 
 import eu.senla.financialtransactions.dto.MessageResponseDto;
+import eu.senla.financialtransactions.entity.Action;
 import eu.senla.financialtransactions.entity.Operation;
 import eu.senla.financialtransactions.entity.Payment;
 import eu.senla.financialtransactions.entity.Transfer;
 import eu.senla.financialtransactions.repository.PaymentRepository;
 import eu.senla.financialtransactions.repository.TransferRepository;
 import eu.senla.financialtransactions.service.ActionService;
+import eu.senla.financialtransactions.service.rabbitmq.RabbitMqActionSender;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -26,10 +28,17 @@ public class ResponseOperationHandler {
 
     private final PaymentRepository paymentRepository;
 
+    private final RabbitMqActionSender rabbitMqActionSender;
+
     @NotNull
     public MessageResponseDto saveData(@NotNull MessageResponseDto responseDto,
                                        @NotNull Operation operation) {
         if (responseDto.getStatus().equals(OK)) {
+
+            Action action = new Action();
+            action.setOperation(operation);
+            rabbitMqActionSender.saveAction(action);
+
             setDataAfterExecute(operation);
             CompletableFuture<Void> saveOperation = new CompletableFuture<>();
             if (operation instanceof Transfer transfer) {

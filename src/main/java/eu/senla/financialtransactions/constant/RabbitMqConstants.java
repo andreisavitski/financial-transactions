@@ -41,6 +41,9 @@ public class RabbitMqConstants {
     public static final String RABBITMQ_QUEUE_RESPONSE_FOR_UPDATE_DEPOSIT =
             "${rabbitmq.queue_response_for_update_deposit.name}";
 
+    public static final String RABBITMQ_QUEUE_REQUEST_FOR_SAVE_ACTION =
+            "${rabbitmq.queue_request_for_save_action.name}";
+
     public static final String RABBITMQ_ROUTING_KEY_FOR_REQUEST_GET_CARD =
             "${rabbitmq.routing_for_request_get_card.key}";
 
@@ -58,6 +61,9 @@ public class RabbitMqConstants {
 
     public static final String RABBITMQ_ROUTING_KEY_FOR_REQUEST_UPDATE_DEPOSIT =
             "${rabbitmq.routing_for_request_update_deposit.key}";
+
+    public static final String RABBITMQ_ROUTING_KEY_FOR_REQUEST_SAVE_ACTION =
+            "${rabbitmq.routing_for_request_save_action.key}";
 
     public static final String RABBITMQ_EXCHANGE_CARD = "${rabbitmq.exchange_card.name}";
 }
