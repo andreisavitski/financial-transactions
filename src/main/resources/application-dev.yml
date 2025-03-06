@@ -8,10 +8,6 @@ spring:
     username: postgres
     password: sa
     url: jdbc:postgresql://localhost:5432/bankdb
-    hikari:
-      connection-timeout: 2000
-      initialization-fail-timeout: 0
-      maximum-pool-size: 300
 
   jpa:
     hibernate:

@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 
 import java.util.function.Supplier;
 
+import static java.lang.String.format;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.NOT_ACCEPTABLE;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @Getter
@@ -18,7 +20,7 @@ public enum ApplicationError implements AppError, Supplier<ApplicationException>
 
     CARD_NOT_FOUND(NOT_FOUND, "The card does not exist"),
 
-    CLIENT_NOT_FOUND(NOT_FOUND, "Client not found"),
+    CLIENT_NOT_FOUND(NOT_ACCEPTABLE, "Client with id = %s not found"),
 
     TRANSFER_NOT_FOUND(NOT_FOUND, "Transfer not found"),
 
@@ -38,5 +40,10 @@ public enum ApplicationError implements AppError, Supplier<ApplicationException>
     @Override
     public ApplicationException get() {
         return new ApplicationException(this);
+    }
+
+    @NotNull
+    public ApplicationException withParams(@NotNull Object... params) {
+        return new ApplicationException(this, format(this.code, params));
     }
 }
