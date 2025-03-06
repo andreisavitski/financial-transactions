@@ -42,7 +42,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public UuidDto checkPayment(@NotNull PaymentRequestDto paymentRequestDto) {
         final Client client = clientRepository.findById(paymentRequestDto.getClientId())
-                .orElseThrow(() -> new ApplicationException(CLIENT_NOT_FOUND));
+                .orElseThrow(() -> CLIENT_NOT_FOUND.withParams(paymentRequestDto.getClientId()));
         final Payment payment = paymentMapper.toPayment(paymentRequestDto);
         final MessageResponseDto messageResponseDto =
                 cardService.getClientCard(payment.getClient().getId());

@@ -5,7 +5,6 @@ import eu.senla.financialtransactions.dto.ClientCardRequestDto;
 import eu.senla.financialtransactions.dto.MessageResponseDto;
 import eu.senla.financialtransactions.dto.PaymentRequestMessageDto;
 import eu.senla.financialtransactions.dto.TransferRequestDto;
-import eu.senla.financialtransactions.exception.ApplicationException;
 import eu.senla.financialtransactions.repository.ClientRepository;
 import eu.senla.financialtransactions.service.CardService;
 import eu.senla.financialtransactions.service.rabbitmq.RabbitMqCardSender;
@@ -72,6 +71,6 @@ public class CardServiceImpl implements CardService {
             final Message message = cardSender.sendRequestForAddCard(clientCardRequestDto);
             return convertToObj(message.getBody(), MessageResponseDto.class);
         }
-        throw new ApplicationException(CLIENT_NOT_FOUND);
+        throw CLIENT_NOT_FOUND.withParams(clientCardRequestDto.getId());
     }
 }

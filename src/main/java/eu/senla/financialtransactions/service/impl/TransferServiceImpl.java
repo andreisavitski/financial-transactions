@@ -38,19 +38,16 @@ public class TransferServiceImpl implements TransferService {
 
     @NotNull
     @Override
-    public UuidDto checkTransfer(
-            @NotNull TransferRequestDto transferRequestDto) {
+    public UuidDto checkTransfer(@NotNull TransferRequestDto transferRequestDto) {
         final Client client = clientRepository.findById(transferRequestDto.getClientId())
-                .orElseThrow(() -> new ApplicationException(CLIENT_NOT_FOUND));
+                .orElseThrow(() -> CLIENT_NOT_FOUND.withParams(transferRequestDto.getClientId()));
         final Transfer transfer = transferMapper.toTransfer(transferRequestDto);
         final MessageResponseDto messageResponseDto =
                 cardService.getClientCard(transfer.getClient().getId());
         validateDataForCheck(transfer, messageResponseDto);
         OperationDataSetter.setDataAfterCheck(transfer, client);
         transferRepository.save(transfer);
-
         responseOperationHandler.saveData(messageResponseDto, transfer);
-
         return transferMapper.toUuidDto(transfer);
     }
 
