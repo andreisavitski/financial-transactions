@@ -3,7 +3,6 @@ package eu.senla.financialtransactions.dto;
 import eu.senla.financialtransactions.enums.Status;
 import lombok.Builder;
 import lombok.Data;
-import lombok.extern.jackson.Jacksonized;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -11,7 +10,6 @@ import java.util.UUID;
 
 @Data
 @Builder
-@Jacksonized
 public class OperationDto {
 
     private final UUID id;
@@ -31,4 +29,6 @@ public class OperationDto {
     private final UUID operatorId;
 
     private final UUID targetCardId;
+
+    private final String operationType;
 }
