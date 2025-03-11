@@ -2,13 +2,12 @@ package eu.senla.financialtransactions.dto;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.extern.jackson.Jacksonized;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
 @Builder
-@Jacksonized
 public class DepositOpenerMessageDto {
 
     private final UUID depositTypeId;
@@ -16,4 +15,10 @@ public class DepositOpenerMessageDto {
     private final UUID cardId;
 
     private final UUID clientId;
+
+    private final BigDecimal amount;
+
+    private final Long termInMonths;
+
+    private final String purpose;
 }

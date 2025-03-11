@@ -7,6 +7,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Getter
@@ -18,4 +19,13 @@ public class Deposit {
     @Id
     @Column(name = "id")
     private UUID id;
+
+    @Column(name = "amount")
+    private BigDecimal amount;
+
+    @Column(name = "termInMonths")
+    private Long termInMonths;
+
+    @Column(name = "purpose")
+    private String purpose;
 }
