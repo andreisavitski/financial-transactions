@@ -4,7 +4,6 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
@@ -19,7 +18,7 @@ public class DepositOpenerMessageDto {
 
     private final BigDecimal amount;
 
-    private final LocalDate term;
+    private final Long termInMonths;
 
     private final String purpose;
 }
