@@ -54,4 +54,16 @@ public class AppConstants {
     public static final String OK = "ok";
 
     public static final String ID = "id";
+
+    public static final long MIN_AMOUNT_FOR_DEPOSIT = 10;
+
+    public static final long MAX_AMOUNT_FOR_DEPOSIT = 100000;
+
+    public static final long MIN_TERM_IN_MONTHS_FOR_DEPOSIT = 6;
+
+    public static final long MAX_TERM_IN_MONTHS_FOR_DEPOSIT = 60;
+
+    public static final int MIN_NUMBER_OF_CHARACTER = 1;
+
+    public static final int MAX_NUMBER_OF_CHARACTER = 255;
 }
