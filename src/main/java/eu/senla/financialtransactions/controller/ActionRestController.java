@@ -4,7 +4,6 @@ import eu.senla.financialtransactions.entity.Action;
 import eu.senla.financialtransactions.service.ActionService;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,13 +31,11 @@ public class ActionRestController {
 
     private final ActionService actionService;
 
-    @NotNull
     @GetMapping("/client")
     public List<Action> getActionByClientId(@RequestParam(value = CLIENT_ID) Long clientId) {
         return actionService.findActionByClientId(clientId);
     }
 
-    @NotNull
     @GetMapping("/page")
     public Page<Action> getActionsByClientId(
             @RequestParam(value = CLIENT_ID) Long clientId,
@@ -49,7 +46,6 @@ public class ActionRestController {
         return actionService.findActionByClientId(clientId, PageRequest.of(offset, limit));
     }
 
-    @NotNull
     @GetMapping("/id")
     public Action getActionId(@RequestParam(value = ID) String id) {
         return actionService.findActionById(id);
