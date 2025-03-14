@@ -5,7 +5,6 @@ import eu.senla.financialtransactions.enums.ActivitySort;
 import eu.senla.financialtransactions.service.ActivityService;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,15 +30,14 @@ public class ActivityRestController {
 
     private final ActivityService activityService;
 
-    @NotNull
     @GetMapping
     @PreAuthorize("hasAuthority(@permissionProvider.getPermissionForPayment())")
     public Page<ActivityDto> getAllActivities(
-            @NotNull @RequestParam(value = OFFSET,
+            @RequestParam(value = OFFSET,
                     defaultValue = DEFAULT_OFFSET) @Min(MIN_OFFSET) Integer offset,
-            @NotNull @RequestParam(value = LIMIT,
+            @RequestParam(value = LIMIT,
                     defaultValue = DEFAULT_LIMIT) @Min(MIN_LIMIT) @Max(MAX_LIMIT) Integer limit,
-            @NotNull @RequestParam(value = SORT) ActivitySort sort) {
+            @RequestParam(value = SORT) ActivitySort sort) {
         return activityService.getAllActivities(PageRequest.of(
                 offset,
                 limit,
