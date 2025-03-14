@@ -4,7 +4,6 @@ import eu.senla.financialtransactions.dto.MessageResponseDto;
 import eu.senla.financialtransactions.dto.PaymentRequestDto;
 import eu.senla.financialtransactions.dto.UuidDto;
 import eu.senla.financialtransactions.service.PaymentService;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,17 +18,15 @@ public class PaymentRestController {
 
     private final PaymentService paymentService;
 
-    @NotNull
     @PostMapping("/check")
     @PreAuthorize("hasAuthority(@permissionProvider.getPermissionForPayment())")
-    public UuidDto checkPayment(@NotNull @RequestBody PaymentRequestDto paymentRequestDto) {
+    public UuidDto checkPayment(@RequestBody PaymentRequestDto paymentRequestDto) {
         return paymentService.checkPayment(paymentRequestDto);
     }
 
-    @NotNull
     @PostMapping("/execute")
     @PreAuthorize("hasAuthority(@permissionProvider.getPermissionForPayment())")
-    public MessageResponseDto executePayment(@NotNull @RequestBody UuidDto uuidDto) {
+    public MessageResponseDto executePayment(@RequestBody UuidDto uuidDto) {
         return paymentService.executePayment(uuidDto);
     }
 }
