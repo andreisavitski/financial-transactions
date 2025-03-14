@@ -37,6 +37,7 @@ public class ActionRestController {
         return actionService.findActionByClientId(clientId);
     }
 
+
     @GetMapping("/page")
     public Page<Action> getActionsByClientId(
             @RequestParam(value = CLIENT_ID) Long clientId,
