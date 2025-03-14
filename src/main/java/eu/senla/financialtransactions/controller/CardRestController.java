@@ -20,7 +20,6 @@ public class CardRestController {
     private final CardService cardService;
 
     @GetMapping("/get")
-    @NotNull
     @PreAuthorize("hasAuthority(@permissionProvider.getPermissionForGetClientCard)")
     public MessageResponseDto getCardByClientId(
             @RequestBody @NotNull ClientCardRequestDto clientCardRequestDto) {
@@ -28,7 +27,6 @@ public class CardRestController {
     }
 
     @PostMapping("/add")
-    @NotNull
     @PreAuthorize("hasAnyAuthority(@permissionProvider.getPermissionForAddCard)")
     public MessageResponseDto addCard(
             @RequestBody @NotNull ClientCardRequestDto clientCardRequestDto) {
