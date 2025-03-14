@@ -10,36 +10,32 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.ResponseEntity.badRequest;
+import static org.springframework.http.ResponseEntity.status;
 
 @RestControllerAdvice
 @Slf4j
 public class ApplicationExceptionHandler {
 
-    @NotNull
     @ExceptionHandler(ApplicationException.class)
     private ResponseEntity<ErrorResponseDTO> handleApplicationException(
             @NotNull ApplicationException applicationException) {
-        return ResponseEntity.status(
+        return status(
                 applicationException.getStatus()).body(
                 new ErrorResponseDTO(applicationException.getStatus(),
                         applicationException.getMessage())
         );
     }
 
-    @NotNull
     @ExceptionHandler(Exception.class)
     private ResponseEntity<ErrorResponseDTO> handleBaseException(@NotNull Exception exception) {
-        return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(
+        return status(INTERNAL_SERVER_ERROR).body(
                 new ErrorResponseDTO(INTERNAL_SERVER_ERROR, exception.getMessage())
         );
     }
 
-    @NotNull
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    private ResponseEntity<ErrorResponseDTO> handleValidationException(
-            @NotNull MethodArgumentNotValidException validException) {
-        return ResponseEntity.status(validException.getStatusCode()).body(
-                new ErrorResponseDTO(validException.getStatusCode(), validException.getMessage())
-        );
+    private ResponseEntity<?> handleValidationException() {
+        return badRequest().build();
     }
 }

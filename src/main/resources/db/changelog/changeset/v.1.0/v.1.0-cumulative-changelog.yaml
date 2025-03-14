@@ -11,3 +11,5 @@ databaseChangeLog:
       file: db/changelog/changeset/v.1.0/v.1.0-04-11-2024-insert-activity-changelog.yaml
   - include:
       file: db/changelog/changeset/v.1.0/v.1.0-04-11-2024-insert-operator-changelog.yaml
+  - include:
+      file: db/changelog/changeset/v.1.0/v.1.0-12-03-2025-add-columns-to-deposit-changelog.yaml

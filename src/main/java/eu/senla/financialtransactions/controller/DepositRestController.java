@@ -4,6 +4,7 @@ import eu.senla.financialtransactions.dto.DepositOpenerMessageDto;
 import eu.senla.financialtransactions.dto.DepositUpdaterMessageDto;
 import eu.senla.financialtransactions.dto.MessageResponseDto;
 import eu.senla.financialtransactions.service.DepositService;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,16 +24,14 @@ public class DepositRestController {
     @PostMapping("/open")
     @NotNull
     @PreAuthorize("hasAuthority(@permissionProvider.permissionForDeposit)")
-    public MessageResponseDto openDeposit(@RequestBody
-                                          @NotNull DepositOpenerMessageDto depositDto) {
+    public MessageResponseDto openDeposit(@Valid @RequestBody DepositOpenerMessageDto depositDto) {
         return depositService.openDeposit(depositDto);
     }
 
     @PutMapping("/update")
     @NotNull
     @PreAuthorize("hasAuthority(@permissionProvider.permissionForDeposit)")
-    public MessageResponseDto updateDeposit(@RequestBody
-                                            @NotNull DepositUpdaterMessageDto depositDto) {
+    public MessageResponseDto updateDeposit(@Valid @RequestBody DepositUpdaterMessageDto depositDto) {
         return depositService.updateDeposit(depositDto);
     }
 }

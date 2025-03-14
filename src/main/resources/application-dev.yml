@@ -88,7 +88,7 @@ permissions:
   permission_for_get_client_card: viewMyCards
   permission_for_add_card: addCard
   permission_for_payment: executionOfPayments
-  permission-for-deposit: rfgj
+  permission-for-deposit: deposit
 
 jwt:
   secret-key: 53A73E5F1C4E0A2D3B5F2D784E6A1B423D6F247D1F6E5C3A596D635A75327855
