@@ -18,6 +18,7 @@ public class CardRestController {
 
     private final CardService cardService;
 
+
     @GetMapping("/get")
     @PreAuthorize("hasAuthority(@permissionProvider.getPermissionForGetClientCard)")
     public MessageResponseDto getCardByClientId(
