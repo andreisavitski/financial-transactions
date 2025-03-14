@@ -22,14 +22,12 @@ public class DepositRestController {
     private final DepositService depositService;
 
     @PostMapping("/open")
-    @NotNull
     @PreAuthorize("hasAuthority(@permissionProvider.permissionForDeposit)")
     public MessageResponseDto openDeposit(@Valid @RequestBody DepositOpenerMessageDto depositDto) {
         return depositService.openDeposit(depositDto);
     }
 
     @PutMapping("/update")
-    @NotNull
     @PreAuthorize("hasAuthority(@permissionProvider.permissionForDeposit)")
     public MessageResponseDto updateDeposit(@Valid @RequestBody DepositUpdaterMessageDto depositDto) {
         return depositService.updateDeposit(depositDto);
