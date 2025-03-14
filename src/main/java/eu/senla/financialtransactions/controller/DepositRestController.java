@@ -22,6 +22,7 @@ public class DepositRestController {
 
 
 
+
     @PostMapping("/open")
     @PreAuthorize("hasAuthority(@permissionProvider.permissionForDeposit)")
     public MessageResponseDto openDeposit(@Valid @RequestBody DepositOpenerMessageDto depositDto) {
