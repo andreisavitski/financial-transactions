@@ -4,7 +4,6 @@ import eu.senla.financialtransactions.dto.MessageResponseDto;
 import eu.senla.financialtransactions.dto.TransferRequestDto;
 import eu.senla.financialtransactions.dto.UuidDto;
 import eu.senla.financialtransactions.service.TransferService;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,19 +18,17 @@ public class TransferRestController {
 
     private final TransferService transferService;
 
-    @NotNull
     @PostMapping("/check")
     @PreAuthorize("hasAuthority(@permissionProvider.getPermissionForTransfer())")
     public UuidDto checkTransfer(
-            @RequestBody @NotNull TransferRequestDto transferCheckResponseDto) {
+            @RequestBody TransferRequestDto transferCheckResponseDto) {
         return transferService.checkTransfer(transferCheckResponseDto);
     }
 
-    @NotNull
     @PostMapping("/execute")
     @PreAuthorize("hasAuthority(@permissionProvider.getPermissionForTransfer())")
     public MessageResponseDto executeTransfer(
-            @RequestBody @NotNull UuidDto uuidDto) {
+            @RequestBody UuidDto uuidDto) {
         return transferService.executeTransfer(uuidDto);
     }
 }
