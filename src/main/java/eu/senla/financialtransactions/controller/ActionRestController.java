@@ -32,14 +32,12 @@ public class ActionRestController {
 
     private final ActionService actionService;
 
-    @NotNull
     @GetMapping("/client")
     public List<Action> getActionByClientId(
             @NotNull @RequestParam(value = CLIENT_ID) Long clientId) {
         return actionService.findActionByClientId(clientId);
     }
 
-    @NotNull
     @GetMapping("/page")
     public Page<Action> getActionsByClientId(
             @NotNull @RequestParam(value = CLIENT_ID) Long clientId,
@@ -50,7 +48,6 @@ public class ActionRestController {
         return actionService.findActionByClientId(clientId, PageRequest.of(offset, limit));
     }
 
-    @NotNull
     @GetMapping("/id")
     public Action getActionId(@NotNull @RequestParam(value = ID) String id) {
         return actionService.findActionById(id);
